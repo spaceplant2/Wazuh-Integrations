@@ -1,0 +1,23 @@
+<decoder name="dns-query">
+  <program_name>^named|pihole-FTL|dnsmasq</program_name>
+</decoder>
+
+<decoder name="dns-query">
+  <parent>dns-query</parent>
+  <regex>query: (\S+) (\S+) (\S+) (\S+) (\S+)</regex>
+  <order>src_ip, query_type, domain, query_class, protocol</order>
+</decoder>
+
+<decoder name="kea-dhcp4">
+  <program_name>kea-dhcp4</program_name>
+</decoder>
+
+<decoder name="kea-dhcp6">
+  <program_name>kea-dhcp6</program_name>
+</decoder>
+
+<decoder name="kea-lease4">
+  <parent>kea-dhcp</parent>
+  <regex>LEASE4_(\S+) \[hwaddr=(\S+)] \[ciaddr=(\S+)]</regex>
+  <order>lease_action, mac, ip</order>
+</decoder>
