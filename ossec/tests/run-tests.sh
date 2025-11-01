@@ -1,8 +1,12 @@
-# /home/edothas/gitProjects/public/Wazuh-Integrations/ossec/tests/run-tests.sh
 #!/bin/bash
 set -e
 
-# Initialize variables
+# Source helper functions
+source lib/test-helpers.sh
+
+log_info "Starting Wazuh integration tests"
+
+# Initialize counters
 TOTAL_TESTS=0
 PASSED_TESTS=0
 FAILED_TESTS=0
@@ -12,14 +16,17 @@ run_tests() {
     local test_dir="$1"
     for test in "$test_dir"/test-*.sh; do
         if [ -x "$test" ]; then
-            echo "Running test: $(basename "$test")"
             TOTAL_TESTS=$((TOTAL_TESTS + 1))
+            log_test_start "$(basename "$test")"
+            
             if "$test"; then
                 PASSED_TESTS=$((PASSED_TESTS + 1))
+                log_success "Test passed: $(basename "$test")"
             else
                 FAILED_TESTS=$((FAILED_TESTS + 1))
-                echo "Test failed: $(basename "$test")"
+                log_error "Test failed: $(basename "$test")"
             fi
+            log_test_end
         fi
     done
 }
@@ -27,13 +34,13 @@ run_tests() {
 # Run all component tests
 for component in network/*; do
     if [ -d "$component" ]; then
-        echo "Testing component: $(basename "$component")"
+        log_info "Testing component: $(basename "$component")"
         run_tests "$component"
     fi
 done
 
 # Print summary
-echo "Test Summary:"
+log_info "Test Summary:"
 echo "Total: $TOTAL_TESTS"
 echo "Passed: $PASSED_TESTS"
 echo "Failed: $FAILED_TESTS"

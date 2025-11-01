@@ -1,38 +1,33 @@
 #!/bin/bash
-# Installation script for Wazuh Network Security Integrations
-```
+set -e
 
-2. Create the test runner:
-````bash
-// filepath: /home/edothas/gitProjects/public/Wazuh-Integrations/ossec/tests/run-tests.sh
-#!/bin/bash
-# Main test runner script
-```
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    exit 1
+fi
 
-3. Create the helper library:
-````bash
-// filepath: /home/edothas/gitProjects/public/Wazuh-Integrations/ossec/tests/lib/test-helpers.sh
-#!/bin/bash
-# Test helper functions
-```
+OSSEC_HOME="/var/ossec"
+INSTALL_DIR="$(pwd)"
 
-Would you like me to provide the full content for any of these missing files?// filepath: /home/edothas/gitProjects/public/Wazuh-Integrations/install.sh
-#!/bin/bash
-# Installation script for Wazuh Network Security Integrations
-```
+echo "Installing Wazuh Network Security Integrations..."
 
-2. Create the test runner:
-````bash
-// filepath: /home/edothas/gitProjects/public/Wazuh-Integrations/ossec/tests/run-tests.sh
-#!/bin/bash
-# Main test runner script
-```
+# Create directories if they don't exist
+mkdir -p "${OSSEC_HOME}/etc/rules"
+mkdir -p "${OSSEC_HOME}/etc/decoders"
 
-3. Create the helper library:
-````bash
-// filepath: /home/edothas/gitProjects/public/Wazuh-Integrations/ossec/tests/lib/test-helpers.sh
-#!/bin/bash
-# Test helper functions
-```
+# Copy rules and decoders
+cp ${INSTALL_DIR}/ossec/rules/* ${OSSEC_HOME}/etc/rules/
+cp ${INSTALL_DIR}/ossec/decoders/* ${OSSEC_HOME}/etc/decoders/
 
-Would you like me to provide the full content for any of these missing files?
+# Set permissions
+chown -R root:wazuh ${OSSEC_HOME}/etc/rules
+chown -R root:wazuh ${OSSEC_HOME}/etc/decoders
+chmod -R 750 ${OSSEC_HOME}/etc/rules
+chmod -R 750 ${OSSEC_HOME}/etc/decoders
+
+# Restart Wazuh manager
+systemctl restart wazuh-manager
+
+echo "Installation complete. Run tests to verify:"
+echo "cd ossec/tests && ./run-tests.sh"
