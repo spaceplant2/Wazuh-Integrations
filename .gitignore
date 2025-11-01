@@ -1,0 +1,10 @@
+
+inventories/production/hosts
+inventories/production/group_vars/*.yml
+inventories/production/host_vars/*.yml
+inventories/staging/hosts
+inventories/staging/group_vars/*.yml
+*.vault
+*.retry
+.vagrant/
+*.log

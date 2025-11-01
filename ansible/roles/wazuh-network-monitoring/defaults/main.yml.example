@@ -1,0 +1,18 @@
+# ansible/roles/wazuh-network-monitoring/defaults/main.yml.example
+---
+# Default variables for the role
+# Override these in group_vars or host_vars
+
+# Service-specific settings
+bind9_log_path: "/var/log/syslog"
+kea_dhcp4_log_path: "/var/log/syslog"
+opnsense_log_path: "/var/log/syslog"
+
+# Alert thresholds
+dns_tunneling_min_length: 50
+dhcp_starvation_threshold: 10
+port_scan_threshold: 5
+
+# Notification settings
+alert_email: "security@example.com"
+slack_webhook: "https://hooks.slack.com/services/XXX/XXX/XXX"

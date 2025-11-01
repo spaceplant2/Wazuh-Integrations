@@ -1,11 +1,12 @@
-# ansible/inventories/production/group_vars/wazuh_servers.yml
+# ansible/inventories/production/group_vars/wazuh_servers.yml.example
 ---
+# Wazuh installation details
 wazuh_install_dir: "/var/ossec"
 wazuh_manager_service: "wazuh-manager"
 
 # Deployment options
 deploy_decoders: true
-deploy_rules: true  
+deploy_rules: true
 deploy_tests: true
 
 # Component selection
@@ -17,3 +18,10 @@ enable_management_monitoring: true
 # Test configuration
 run_tests_after_deploy: true
 test_timeout: 30
+
+# Service credentials (use vault for these!)
+wazuh_api_user: "api_user"
+wazuh_api_password: "CHANGE_ME"
+
+# Log file locations
+syslog_path: "/var/log/syslog"
