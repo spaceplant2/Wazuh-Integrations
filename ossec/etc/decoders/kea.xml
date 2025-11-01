@@ -6,12 +6,14 @@
 <!-- DHCPv4 Leases -->
 <decoder name="kea-dhcp4-lease">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DHCP4_LEASE_ALLOC \[\S+\] \[hwaddr=(\S+)\] \[yiaddr=(\S+)\] \[lease-time=(\S+)\]</regex>
   <order>mac_address, client_ip, lease_time</order>
 </decoder>
 
 <decoder name="kea-dhcp4-lease-released">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DHCP4_LEASE_RELEASED \[\S+\] \[hwaddr=(\S+)\] \[yiaddr=(\S+)\]</regex>
   <order>mac_address, client_ip</order>
 </decoder>
@@ -19,6 +21,7 @@
 <!-- DHCPv6 Leases -->
 <decoder name="kea-dhcp6-lease">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DHCP6_LEASE_ALLOC \[\S+\] \[type=(\S+)\] \[iaid=(\S+)\] \[duid=(\S+)\] \[address=(\S+)\]</regex>
   <order>lease_type, iaid, duid, client_ip</order>
 </decoder>
@@ -26,6 +29,7 @@
 <!-- Rogue DHCP Detection -->
 <decoder name="kea-rogue-dhcp">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DHCP4_CONFLICT_DETECTED \[\S+\] \[address=(\S+)\] \[hwaddr=(\S+)\]</regex>
   <order>conflict_ip, conflict_mac</order>
 </decoder>
@@ -33,6 +37,7 @@
 <!-- DHCP Errors -->
 <decoder name="kea-errors">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DHCP4_(\S+)_FAIL \[\S+\] \[hwaddr=(\S+)\] \[msg=([^]]+)\]</regex>
   <order>error_type, mac_address, error_message</order>
 </decoder>
@@ -40,6 +45,7 @@
 <!-- High Availability Events -->
 <decoder name="kea-ha">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>HA_(\S+) \[partner=(\S+)\] \[state=(\S+)\]</regex>
   <order>ha_event, partner, state</order>
 </decoder>
@@ -47,12 +53,14 @@
 <!-- DDNS Events -->
 <decoder name="kea-dns-update">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DNS_UPDATE_ADD \[\S+\] \[name=(\S+)\] \[ip=(\S+)\]</regex>
   <order>hostname, ip_address</order>
 </decoder>
 
 <decoder name="kea-dns-update-failed">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>DNS_UPDATE_FAILED \[\S+\] \[name=(\S+)\] \[reason=([^]]+)\]</regex>
   <order>hostname, failure_reason</order>
 </decoder>
@@ -60,12 +68,14 @@
 <!-- Control Agent Events -->
 <decoder name="kea-control-config">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>CONFIG_(\S+) \[\S+\] \[user=(\S+)\] \[method=(\S+)\]</regex>
   <order>config_action, username, method</order>
 </decoder>
 
 <decoder name="kea-control-lease">
   <parent>isc-kea</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>LEASE_(\S+) \[\S+\] \[user=(\S+)\] \[address=(\S+)\]</regex>
   <order>lease_action, username, ip_address</order>
 </decoder>

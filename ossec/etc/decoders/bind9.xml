@@ -6,6 +6,7 @@
 <!-- DNS Queries -->
 <decoder name="bind9-query">
   <parent>bind9</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>client (\S+)#\d+ \(([^)]+)\): query: (\S+) (\S+) (\S+) \((\S+)\)</regex>
   <order>client_ip, client_name, domain, query_type, query_class, src_interface</order>
 </decoder>
@@ -13,6 +14,7 @@
 <!-- Alternative query format -->
 <decoder name="bind9-query-alt">
   <parent>bind9</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>query: (\S+) (\S+) (\S+) (\S+) (\S+)</regex>
   <order>src_ip, query_type, domain, query_class, protocol</order>
 </decoder>
@@ -20,6 +22,7 @@
 <!-- DNS Responses -->
 <decoder name="bind9-response">
   <parent>bind9</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>(\S+): info: response for (\S+) (\S+)</regex>
   <order>server_ip, domain, query_type</order>
 </decoder>
@@ -27,6 +30,7 @@
 <!-- Security Events -->
 <decoder name="bind9-security">
   <parent>bind9</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>security: error: (.+)</regex>
   <order>security_message</order>
 </decoder>
@@ -34,6 +38,7 @@
 <!-- Zone Transfers -->
 <decoder name="bind9-zone-xfer">
   <parent>bind9</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>transfer of '(\S+)' from (\S+): .+</regex>
   <order>zone_name, source_ip</order>
 </decoder>
@@ -41,6 +46,7 @@
 <!-- Query Errors -->
 <decoder name="bind9-error">
   <parent>bind9</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>error: (.+): (.+)</regex>
   <order>error_type, error_message</order>
 </decoder>

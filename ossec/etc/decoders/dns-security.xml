@@ -4,6 +4,7 @@
 
 <decoder name="dns-query">
   <parent>dns-query</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>query: (\S+) (\S+) (\S+) (\S+) (\S+)</regex>
   <order>src_ip, query_type, domain, query_class, protocol</order>
 </decoder>
@@ -18,6 +19,7 @@
 
 <decoder name="kea-lease4">
   <parent>kea-dhcp</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>LEASE4_(\S+) \[hwaddr=(\S+)] \[ciaddr=(\S+)]</regex>
   <order>lease_action, mac, ip</order>
 </decoder>

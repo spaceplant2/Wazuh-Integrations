@@ -6,12 +6,14 @@
 <!-- Firewall Allow/Block Events -->
 <decoder name="opnsense-firewall">
   <parent>opnsense</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>filterlog: (\d+),,(\S+),(\S+),(\S+),(\S+),,(\S+),(\S+),(\S+),(\S+),(\S+),(\S+),(\S+),,([^,]+),([^,]+)</regex>
   <order>rule_id, subrule_id, anchor, tracker, interface, reason, action, direction, ipv, tos, ecn, ttl, id, offset, flags, protocol_id, protocol</order>
 </decoder>
 
 <decoder name="opnsense-firewall-ip">
   <parent>opnsense-firewall</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>(\S+),(\S+),(\S+),(\S+)</regex>
   <order>src_ip, dst_ip, src_port, dst_port</order>
 </decoder>
@@ -19,6 +21,7 @@
 <!-- DHCP Events -->
 <decoder name="opnsense-dhcp">
   <parent>opnsense</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>dhcpd: DHCP(\S+) for (\S+) from (\S+) via (\S+)</regex>
   <order>dhcp_action, client_ip, mac_address, interface</order>
 </decoder>
@@ -26,6 +29,7 @@
 <!-- Suricata Alerts -->
 <decoder name="opnsense-suricata">
   <parent>opnsense</parent>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
   <regex>suricata: \[\*\] (.+) \[\*\] (.+) \[\*\] (.+)</regex>
   <order>suricata_signature, src_ip, dst_ip</regex>
 </decoder>
