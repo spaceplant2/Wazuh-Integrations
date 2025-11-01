@@ -42,7 +42,9 @@ sudo ./run-tests.sh
 │   ├── decoders/   # Custom log decoders
 │   ├── rules/      # Alert rules
 │   └── tests/      # Validation tests
-└── docs/           # Additional documentation
+├── TESTING.md      # Testing documentation
+├── TROUBLESHOOTING.md # Troubleshooting guide
+└── LICENSE         # MIT License
 ```
 
 ## Testing
