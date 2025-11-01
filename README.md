@@ -9,18 +9,21 @@ Comprehensive security monitoring for critical network infrastructure components
 - Management Systems (ISC-Stork)
 
 ## Prerequisites
-- Wazuh manager and agent installed
-- Network services running (Bind9, Kea, OPNsense, Stork)
-- Root/sudo access for installation
-- Bash shell environment
+- Wazuh manager (4.x) with working installation
+- Root/sudo access on Wazuh manager
+- Network services configured and running:
+  - Bind9 DNS server
+  - ISC-Kea DHCP server
+  - OPNsense firewall
+  - ISC-Stork management system
 
 ## Quick Start
-1. Clone the repository:
+1. Clone repository:
 ```bash
-git clone https://github.com/yourusername/Wazuh-Integrations.git
+git clone https://github.com/spaceplant2/Wazuh-Integrations.git
 ```
 
-2. Run installation script:
+2. Install custom rules and decoders:
 ```bash
 cd Wazuh-Integrations
 sudo ./install.sh
@@ -34,24 +37,25 @@ sudo ./run-tests.sh
 
 ## Directory Structure
 ```
-├── ansible/          # Deployment automation
+├── install.sh       # Installation script
 ├── ossec/
-│   ├── decoders/    # Custom log decoders
-│   ├── rules/       # Alert rules
-│   └── tests/       # Validation tests
-└── docs/            # Additional documentation
+│   ├── decoders/   # Custom log decoders
+│   ├── rules/      # Alert rules
+│   └── tests/      # Validation tests
+└── docs/           # Additional documentation
 ```
 
 ## Testing
-Each component has dedicated test scripts that verify rule functionality:
+Each security component has dedicated test scripts that verify rule functionality:
 - DNS security tests (`ossec/tests/network/dns/`)
 - DHCP monitoring tests (`ossec/tests/network/dhcp/`)
 - Firewall alert tests (`ossec/tests/network/firewall/`)
 - Management system tests (`ossec/tests/network/stork/`)
 
-## Contributing
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+For detailed testing instructions, see [Testing Guide](TESTING.md).
+
+## Troubleshooting
+See [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for common issues and solutions.
 
 ## License
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
-
+MIT License - see [LICENSE](LICENSE) file.
