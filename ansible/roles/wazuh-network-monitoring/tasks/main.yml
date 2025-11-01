@@ -1,0 +1,17 @@
+# ansible/roles/wazuh-network-monitoring/tasks/main.yml
+---
+- name: Include decoder deployment
+  include_tasks: decoders.yml
+  when: deploy_decoders | bool
+
+- name: Include rule deployment  
+  include_tasks: rules.yml
+  when: deploy_rules | bool
+
+- name: Include test deployment
+  include_tasks: tests.yml
+  when: deploy_tests | bool
+
+- name: Restart Wazuh manager
+  meta: flush_handlers
+  

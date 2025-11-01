@@ -1,0 +1,10 @@
+# ansible/roles/wazuh-network-monitoring/handlers/main.yml
+---
+- name: restart wazuh manager
+  systemd:
+    name: "{{ wazuh_manager_service }}"
+    state: restarted
+    enabled: yes
+  async: 60
+  poll: 15
+  

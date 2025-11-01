@@ -1,0 +1,29 @@
+# ansible/roles/wazuh-network-monitoring/tasks/decoders.yml
+---
+- name: Create network decoders directory
+  file:
+    path: "{{ wazuh_install_dir }}/etc/decoders/network"
+    state: directory
+    owner: root
+    group: wazuh
+    mode: '0755'
+
+- name: Deploy network decoders
+  copy:
+    src: "{{ item }}"
+    dest: "{{ wazuh_install_dir }}/etc/decoders/network/"
+    owner: root
+    group: wazuh
+    mode: '0644'
+  loop: "{{ query('fileglob', 'files/decoders/network/*.xml') }}"
+  notify: restart wazuh manager
+
+- name: Deploy custom decoders configuration
+  copy:
+    src: files/decoders/custom-decoders.conf
+    dest: "{{ wazuh_install_dir }}/etc/decoders/"
+    owner: root
+    group: wazuh
+    mode: '0644'
+  notify: restart wazuh manager
+  

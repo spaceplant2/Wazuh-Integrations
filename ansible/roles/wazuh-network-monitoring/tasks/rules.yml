@@ -1,0 +1,49 @@
+# ansible/roles/wazuh-network-monitoring/tasks/rules.yml
+---
+- name: Create network rules directory
+  file:
+    path: "{{ wazuh_install_dir }}/etc/rules/network"
+    state: directory
+    owner: root
+    group: wazuh
+    mode: '0755'
+
+- name: Deploy DNS rules
+  copy:
+    src: files/rules/network/bind9-rules.xml
+    dest: "{{ wazuh_install_dir }}/etc/rules/network/"
+    owner: root
+    group: wazuh
+    mode: '0644'
+  when: enable_dns_monitoring | bool
+  notify: restart wazuh manager
+
+- name: Deploy DHCP rules
+  copy:
+    src: files/rules/network/isc-kea-rules.xml
+    dest: "{{ wazuh_install_dir }}/etc/rules/network/"
+    owner: root
+    group: wazuh
+    mode: '0644'
+  when: enable_dhcp_monitoring | bool
+  notify: restart wazuh manager
+
+- name: Deploy firewall rules
+  copy:
+    src: files/rules/network/opnsense-rules.xml
+    dest: "{{ wazuh_install_dir }}/etc/rules/network/"
+    owner: root
+    group: wazuh
+    mode: '0644'
+  when: enable_firewall_monitoring | bool
+  notify: restart wazuh manager
+
+- name: Deploy custom rules configuration
+  copy:
+    src: files/rules/custom-rules.conf
+    dest: "{{ wazuh_install_dir }}/etc/rules/"
+    owner: root
+    group: wazuh
+    mode: '0644'
+  notify: restart wazuh manager
+  

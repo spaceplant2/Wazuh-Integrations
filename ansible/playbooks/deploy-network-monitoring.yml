@@ -1,0 +1,23 @@
+# ansible/playbooks/deploy-network-monitoring.yml
+---
+- name: Deploy Wazuh Network Monitoring Configuration
+  hosts: wazuh_servers
+  become: yes
+  vars_files:
+    - "../inventories/production/group_vars/wazuh_servers.yml"
+  
+  roles:
+    - role: wazuh-network-monitoring
+      tags: ['deploy']
+
+  post_tasks:
+    - name: Wait for Wazuh manager to stabilize
+      wait_for:
+        timeout: 30
+      when: run_tests_after_deploy | bool
+
+    - name: Run deployment validation tests
+      include_tasks: "../roles/wazuh-network-monitoring/tasks/run-tests.yml"
+      when: run_tests_after_deploy | bool
+      tags: ['test']
+      

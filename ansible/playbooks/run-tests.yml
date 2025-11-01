@@ -1,0 +1,31 @@
+# ansible/playbooks/run-tests.yml
+---
+- name: Run Wazuh Network Monitoring Tests
+  hosts: wazuh_servers
+  become: yes
+  vars_files:
+    - "../inventories/production/group_vars/wazuh_servers.yml"
+
+  tasks:
+    - name: Run DNS security tests
+      command: "{{ wazuh_install_dir }}/tests/run-component.sh dns"
+      register: dns_test_result
+      changed_when: false
+      when: enable_dns_monitoring | bool
+
+    - name: Show DNS test results
+      debug:
+        msg: "DNS Tests: {{ dns_test_result.stdout }}"
+      when: enable_dns_monitoring | bool
+
+    - name: Run DHCP security tests
+      command: "{{ wazuh_install_dir }}/tests/run-component.sh dhcp"
+      register: dhcp_test_result
+      changed_when: false
+      when: enable_dhcp_monitoring | bool
+
+    - name: Show DHCP test results
+      debug:
+        msg: "DHCP Tests: {{ dhcp_test_result.stdout }}"
+      when: enable_dhcp_monitoring | bool
+      

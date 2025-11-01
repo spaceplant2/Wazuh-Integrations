@@ -1,0 +1,19 @@
+# ansible/inventories/production/group_vars/wazuh_servers.yml
+---
+wazuh_install_dir: "/var/ossec"
+wazuh_manager_service: "wazuh-manager"
+
+# Deployment options
+deploy_decoders: true
+deploy_rules: true  
+deploy_tests: true
+
+# Component selection
+enable_dns_monitoring: true
+enable_dhcp_monitoring: true
+enable_firewall_monitoring: true
+enable_management_monitoring: true
+
+# Test configuration
+run_tests_after_deploy: true
+test_timeout: 30

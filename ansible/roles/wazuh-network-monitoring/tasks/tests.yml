@@ -1,0 +1,57 @@
+# ansible/roles/wazuh-network-monitoring/tasks/tests.yml
+---
+- name: Create tests directory structure
+  file:
+    path: "{{ wazuh_install_dir }}/tests/{{ item }}"
+    state: directory
+    owner: root
+    group: wazuh
+    mode: '0755'
+  loop:
+    - lib
+    - network/dns
+    - network/dhcp
+    - network/firewall
+    - network/management
+
+- name: Deploy test library scripts
+  copy:
+    src: "files/tests/lib/{{ item }}"
+    dest: "{{ wazuh_install_dir }}/tests/lib/"
+    owner: root
+    group: wazuh
+    mode: '0755'
+  loop: "{{ query('fileglob', 'files/tests/lib/*.sh') }}"
+
+- name: Deploy DNS test scripts
+  copy:
+    src: "files/tests/network/dns/{{ item }}"
+    dest: "{{ wazuh_install_dir }}/tests/network/dns/"
+    owner: root
+    group: wazuh
+    mode: '0755'
+  loop: "{{ query('fileglob', 'files/tests/network/dns/*.sh') }}"
+  when: enable_dns_monitoring | bool
+
+- name: Deploy DHCP test scripts
+  copy:
+    src: "files/tests/network/dhcp/{{ item }}"
+    dest: "{{ wazuh_install_dir }}/tests/network/dhcp/"
+    owner: root
+    group: wazuh
+    mode: '0755'
+  loop: "{{ query('fileglob', 'files/tests/network/dhcp/*.sh') }}"
+  when: enable_dhcp_monitoring | bool
+
+- name: Deploy test runners
+  copy:
+    src: "files/tests/{{ item }}"
+    dest: "{{ wazuh_install_dir }}/tests/"
+    owner: root
+    group: wazuh
+    mode: '0755'
+  loop:
+    - run-all.sh
+    - run-component.sh
+    - README.md
+    

@@ -1,0 +1,13 @@
+# ansible/inventories/production/hosts
+[wazuh_servers]
+wazuh-manager-01 ansible_host=192.168.1.10 ansible_user=admin
+
+[opnsense_firewalls]
+firewall-01 ansible_host=192.168.1.1 ansible_user=root
+
+[dns_servers]
+dns-primary ansible_host=192.168.1.20 ansible_user=admin
+dns-secondary ansible_host=192.168.1.21 ansible_user=admin
+
+[dhcp_servers]
+dhcp-primary ansible_host=192.168.1.30 ansible_user=admin
