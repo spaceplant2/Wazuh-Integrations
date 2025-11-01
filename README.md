@@ -55,7 +55,7 @@ Each security component has dedicated test scripts that verify rule functionalit
 For detailed testing instructions, see [Testing Guide](TESTING.md).
 
 ## Troubleshooting
-See [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for common issues and solutions.
+See [Troubleshooting Guide](TROUBLESHOOTING.md) for common issues and solutions.
 
 ## License
 MIT License - see [LICENSE](LICENSE) file.
