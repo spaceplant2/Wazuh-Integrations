@@ -1,7 +1,7 @@
 # tests/network/dhcp/test-rogue-dhcp.sh
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="Rogue DHCP Server Detection"
 TEST_ID="DHCP-ROGUE-001"

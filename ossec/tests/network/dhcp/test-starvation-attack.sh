@@ -1,7 +1,6 @@
 #!/bin/bash
-# /var/ossec/tests/network/dhcp/test-starvation-attack.sh
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="DHCP Starvation Attack Detection"
 TEST_ID="DHCP-STARVE-001"

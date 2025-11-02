@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../../lib/test-helpers.sh
+source $(dirname "$0")/../../lib/test-helpers.sh
 
 TEST_NAME="Stork Configuration Change Detection"
 TEST_ID="STORK-001"

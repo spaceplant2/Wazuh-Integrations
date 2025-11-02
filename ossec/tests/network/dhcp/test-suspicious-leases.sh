@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="Suspicious DHCP Lease Detection"
 TEST_ID="DHCP-LEASE-001"

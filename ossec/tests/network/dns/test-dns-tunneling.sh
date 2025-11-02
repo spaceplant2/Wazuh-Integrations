@@ -1,7 +1,6 @@
-# tests/network/dns/test-dns-tunneling.sh
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="DNS Tunneling Detection"
 TEST_ID="DNS-TUNNEL-001"

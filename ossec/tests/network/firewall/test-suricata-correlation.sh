@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="Suricata-Firewall Correlation"
 TEST_ID="FW-SURICATA-001"

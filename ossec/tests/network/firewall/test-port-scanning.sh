@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="Firewall Port Scanning Detection"
 TEST_ID="FW-PORTSCAN-001"

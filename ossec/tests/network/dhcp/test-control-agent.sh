@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
-source ../lib/wazuh-api.sh
+source $(dirname "$0")/../lib/test-helpers.sh
+source $(dirname "$0")/../lib/wazuh-api.sh
 
 TEST_NAME="Kea Control Agent Security"
 TEST_ID="DHCP-CTRL-001"

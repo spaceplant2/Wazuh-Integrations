@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="Zone Transfer Attempt Detection"
 TEST_ID="DNS-ZONE-001"

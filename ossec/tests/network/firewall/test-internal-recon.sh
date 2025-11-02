@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="Firewall Internal Reconnaissance Detection"
 TEST_ID="FW-RECON-001"

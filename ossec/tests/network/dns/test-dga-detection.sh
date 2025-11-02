@@ -1,7 +1,6 @@
-# tests/network/dns/test-dga-detection.sh
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="DGA Domain Detection"
 TEST_ID="DNS-DGA-001"

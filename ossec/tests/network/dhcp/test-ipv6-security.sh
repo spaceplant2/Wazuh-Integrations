@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../lib/test-helpers.sh
+source $(dirname "$0")/../lib/test-helpers.sh
 
 TEST_NAME="DHCPv6 Security Monitoring"
 TEST_ID="DHCP-IPV6-001"
