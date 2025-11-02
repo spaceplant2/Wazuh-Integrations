@@ -1,5 +1,5 @@
+# tests/lib/test-helpers.sh
 #!/bin/bash
-# /var/ossec/tests/lib/test-helpers.sh
 
 WAZUH_DIR="/var/ossec"
 ALERTS_LOG="$WAZUH_DIR/logs/alerts/alerts.log"
@@ -67,11 +67,22 @@ check_wazuh_alert() {
 restart_wazuh_manager() {
     log_info "Restarting Wazuh manager to reload rules..."
     systemctl restart wazuh-manager
-    sleep 10  # Wait for service to fully start
+    sleep 10
 }
 
 validate_decoders() {
     log_info "Validating Wazuh decoders..."
     $WAZUH_DIR/bin/wazuh-logtest -t
     return $?
+}
+
+check_service_running() {
+    local service_name="$1"
+    if systemctl is-active --quiet "$service_name"; then
+        log_info "Service $service_name is running"
+        return 0
+    else
+        log_error "Service $service_name is not running"
+        return 1
+    fi
 }

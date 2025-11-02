@@ -1,4 +1,3 @@
-# /home/edothas/gitProjects/public/Wazuh-Integrations/ossec/tests/network/stork/test-auth-failure.sh
 #!/bin/bash
 
 source ../../lib/test-helpers.sh

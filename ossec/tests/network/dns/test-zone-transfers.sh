@@ -1,5 +1,4 @@
 #!/bin/bash
-# /var/ossec/tests/network/dns/test-zone-transfers.sh
 
 source ../lib/test-helpers.sh
 

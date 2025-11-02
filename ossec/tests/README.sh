@@ -1,6 +1,11 @@
+# tests/README.md
 # Wazuh Network Monitoring Test Suite
 
+## Overview
+Automated tests for validating Wazuh network infrastructure monitoring rules and decoders.
+
 ## Quick Start
+
 ```bash
 cd /var/ossec/tests
 

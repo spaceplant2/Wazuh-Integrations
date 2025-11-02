@@ -1,5 +1,4 @@
 #!/bin/bash
-# /var/ossec/tests/network/firewall/test-firewall-blocks.sh
 
 source ../lib/test-helpers.sh
 
