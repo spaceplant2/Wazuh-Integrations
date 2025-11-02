@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<group name="pihole,">
+  
+  <!-- Pi-hole Query Monitoring -->
+  <rule id="100500" level="0">
+    <decoded_as>pihole-query</decoded_as>
+    <description>Pi-hole: DNS query from $(client_ip) for $(domain) type $(query_type)</description>
+  </rule>
+
+  <rule id="100501" level="3">
+    <if_sid>100500</if_sid>
+    <field name="domain">\.(duckdns|no-ip|dyn|dnsomatic|changeip)\.</field>
+    <description>Pi-hole: Dynamic DNS domain query - $(domain) from $(client_ip)</description>
+  </rule>
+
+  <!-- Pi-hole Blocked Queries -->
+  <rule id="100502" level="5">
+    <decoded_as>pihole-blocked</decoded_as>
+    <description>Pi-hole: Domain blocked - $(domain)</description>
+  </rule>
+
+  <rule id="100503" level="6">
+    <if_sid>100502</if_sid>
+    <same_source_ip />
+    <frequency>10</frequency>
+    <timeframe>60</timeframe>
+    <description>Pi-hole: High volume of blocked domains from single client</description>
+  </rule>
+
+  <!-- Suspicious Query Patterns -->
+  <rule id="100504" level="7">
+    <if_sid>100500</if_sid>
+    <field name="domain">\.{50,}</field>
+    <description>Pi-hole: Possible DNS tunneling - long domain name $(domain)</description>
+  </rule>
+
+  <rule id="100505" level="6">
+    <if_sid>100500</if_sid>
+    <field name="domain">[bcdfghjklmnpqrstvwxyz]{8,}\.</field>
+    <description>Pi-hole: Possible DGA domain - excessive consonants in $(domain)</description>
+  </rule>
+
+  <!-- Cache Monitoring -->
+  <rule id="100506" level="0">
+    <decoded_as>pihole-cache</decoded_as>
+    <description>Pi-hole: Cache $(cache_result) for query</description>
+  </rule>
+
+  <!-- Forwarding Monitoring -->
+  <rule id="100507" level="0">
+    <decoded_as>pihole-forward</decoded_as>
+    <description>Pi-hole: Query for $(domain) forwarded to $(upstream_server)</description>
+  </rule>
+
+  <!-- Correlation with Upstream DNS -->
+  <rule id="100508" level="8">
+    <if_sid>100500,100100</if_sid>
+    <same_domain />
+    <timeframe>10</timeframe>
+    <description>Pi-hole: Suspicious domain $(domain) detected both at Pi-hole and upstream DNS</description>
+  </rule>
+
+  <!-- Bypass Attempt Detection -->
+  <rule id="100509" level="10">
+    <if_sid>100500</if_sid>
+    <field name="client_ip">^127.0.0.1$|^::1$</field>
+    <field name="domain">\.(ad|ads|tracking|analytics)\.</field>
+    <description>Pi-hole: Possible local bypass attempt for advertising domain $(domain)</description>
+  </rule>
+
+  <!-- Query Type Anomalies -->
+  <rule id="100510" level="6">
+    <if_sid>100500</if_sid>
+    <field name="query_type">^(TXT|NULL|ANY)$</field>
+    <same_source_ip />
+    <frequency>5</frequency>
+    <timeframe>120</timeframe>
+    <description>Pi-hole: Suspicious query type burst - $(query_type) from $(client_ip)</description>
+  </rule>
+
+  <!-- Internal Service Discovery -->
+  <rule id="100511" level="5">
+    <if_sid>100500</if_sid>
+    <field name="domain">(?i)(_ldap\._tcp|_kerberos|_domain|dc\.|exchange\.|sharepoint\.)</field>
+    <description>Pi-hole: Internal service discovery attempt - $(domain) from $(client_ip)</description>
+  </rule>
+
+</group>
