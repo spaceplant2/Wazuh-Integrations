@@ -6,7 +6,7 @@
 <!-- Authentication Events -->
 <decoder name="stork-auth">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>user '(\S+)' (logged in|failed to log in|logged out) from (\S+)</regex>
   <order>username, auth_action, source_ip</order>
 </decoder>
@@ -14,7 +14,7 @@
 <!-- Configuration Changes -->
 <decoder name="stork-config">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>configuration (updated|changed|applied) by user '(\S+)'</regex>
   <order>config_action, username</order>
 </decoder>
@@ -22,7 +22,7 @@
 <!-- Machine/Agent Events -->
 <decoder name="stork-machine">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>machine '(\S+)' (registered|deregistered|state changed to (\S+))</regex>
   <order>machine_name, machine_action, machine_state</order>
 </decoder>
@@ -30,7 +30,7 @@
 <!-- Service Monitoring -->
 <decoder name="stork-service">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>service '(\S+)' on machine '(\S+)' is now (\S+)</regex>
   <order>service_name, machine_name, service_state</order>
 </decoder>
@@ -38,7 +38,7 @@
 <!-- Security Events -->
 <decoder name="stork-security">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>security: (access denied|unauthorized attempt|permission denied) for user '(\S+)'</regex>
   <order>security_event, username</order>
 </decoder>
@@ -46,7 +46,7 @@
 <!-- HA/Failover Events -->
 <decoder name="stork-ha">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>HA (failover|state change): (\S+) -> (\S+) for machine '(\S+)'</regex>
   <order>ha_event, old_state, new_state, machine_name</order>
 </decoder>
@@ -54,7 +54,7 @@
 <!-- API Events -->
 <decoder name="stork-api">
   <parent>isc-stork</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ stork\[\d+\]:</prematch>
   <regex>API (\S+) request from (\S+) user '(\S+)' endpoint '(\S+)'</regex>
   <order>api_method, source_ip, username, endpoint</order>
 </decoder>
