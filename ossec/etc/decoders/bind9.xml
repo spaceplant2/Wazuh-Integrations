@@ -1,6 +1,6 @@
 <decoder name="bind9">
   <program_name>^named</program_name>
-  <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
 </decoder>
 
 <decoder name="bind9-query">
