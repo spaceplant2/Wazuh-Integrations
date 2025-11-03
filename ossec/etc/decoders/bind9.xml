@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <decoder name="bind9">
   <program_name>^named</program_name>
   <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
