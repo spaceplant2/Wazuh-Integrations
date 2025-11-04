@@ -3,20 +3,18 @@
   <!-- Firewall Correlation Rules -->
   <rule id="110100" level="3">
     <decoded_as>opnsense-firewall</decoded_as>
-    <field name="action">block</field>
     <description>OPNsense firewall block: $(src_ip) -> $(dst_ip):$(dst_port)</description>
   </rule>
   
   <rule id="110101" level="5">
     <decoded_as>opnsense-firewall</decoded_as>
-    <field name="action">block</field>
     <field name="dst_port">22|23|3389|5900</field>
     <description>OPNsense blocked administrative port access: $(src_ip) -> $(dst_ip):$(dst_port)</description>
   </rule>
   
   <rule id="110102" level="10" frequency="10" timeframe="30">
     <if_matched_sid>110100</if_matched_sid>
-    <same_source_ip />
+    <same_srcip />
     <description>Port scanning detected from $(src_ip) - multiple blocked attempts</description>
   </rule>
 
@@ -29,7 +27,7 @@
   
   <rule id="110201" level="10" frequency="5" timeframe="60">
     <if_matched_sid>110200</if_matched_sid>
-    <same_mac />
+    <same_field>mac_address</same_field>
     <field name="dhcp_action">DISCOVER</field>
     <description>DHCP starvation attempt from MAC $(mac)</description>
   </rule>
@@ -42,8 +40,8 @@
   
   <rule id="110301" level="13">
     <if_sid>110300,110100</if_sid>
-    <same_src_ip />
-    <same_dst_ip />
+    <same_srcip />
+    <same_dstip />
     <timeframe>10</timeframe>
     <description>Suricata alert followed by firewall block - potential successful attack</description>
   </rule>
