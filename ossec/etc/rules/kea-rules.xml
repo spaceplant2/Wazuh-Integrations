@@ -102,7 +102,7 @@
   <rule id="130801" level="8" frequency="20" timeframe="60">
     <if_matched_sid>130101</if_matched_sid>
     <field name="error_type">PACKET</field>
-    <same_src_ip />
+    <same_srcip />
     <description>DHCP packet flood from $(client_ip)</description>
   </rule>
 
