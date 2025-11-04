@@ -78,7 +78,7 @@
   
   <rule id="130601" level="9">
     <if_sid>130300</if_sid>
-    <same_ip>client_ip</same_ip>
+    <same_src_ip />
     <if_matched_sid>120300,120302</if_matched_sid>
     <timeframe>300</timeframe>
     <description>Suspicious DHCP lease $(client_ip) performing DNS reconnaissance</description>
@@ -88,7 +88,7 @@
   <rule id="130700" level="7" frequency="3" timeframe="300">
     <if_matched_sid>130101</if_matched_sid>
     <same_field>mac_address</same_field>
-    <different_ip>client_ip</different_ip>
+    <different_src_ip />
     <description>Rapid IP changes for MAC $(mac_address) - possible MAC spoofing</description>
   </rule>
 
@@ -102,7 +102,7 @@
   <rule id="130801" level="8" frequency="20" timeframe="60">
     <if_matched_sid>130101</if_matched_sid>
     <field name="error_type">PACKET</field>
-    <same_source_ip />
+    <same_src_ip />
     <description>DHCP packet flood from $(client_ip)</description>
   </rule>
 
