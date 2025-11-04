@@ -1,9 +1,10 @@
-<!-- Authentication Security -->
-<group name="stork_auth_security,">
+<group name="stork,">
+  
+  <!-- Authentication Security -->
   <rule id="132000" level="8">
     <decoded_as>stork-auth</decoded_as>
     <field name="auth_action">failed to log in</field>
-    <same_username />
+    <same_user />
     <frequency>5</frequency>
     <timeframe>300</timeframe>
     <description>Stork brute force attempt: User $(username) from $(source_ip)</description>
@@ -18,20 +19,18 @@
   
   <rule id="132002" level="10">
     <decoded_as>stork-auth</decoded_as>
-    <field name="username">^(root|admin|administrator)$</field>
+    <field name="username">root|admin|administrator</field>
     <field name="auth_action">logged in</field>
     <description>Privileged user Stork login: $(username) from $(source_ip)</description>
   </rule>
   
   <rule id="132003" level="9">
     <decoded_as>stork-auth</decoded_as>
-    <field name="source_ip">^(?!192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.).+</field>
+    <field name="source_ip">192.168.|10.|172.</field>
     <description>External Stork login attempt: $(username) from $(source_ip)</description>
   </rule>
-</group>
 
-<!-- Configuration Security -->
-<group name="stork_config_security,">
+  <!-- Configuration Security -->
   <rule id="132100" level="10">
     <decoded_as>stork-config</decoded_as>
     <description>Stork configuration change: $(config_action) by $(username)</description>
@@ -39,7 +38,7 @@
   
   <rule id="132101" level="11">
     <decoded_as>stork-config</decoded_as>
-    <field name="username">^(test|guest|unknown|default)$</field>
+    <field name="username">test|guest|unknown|default</field>
     <description>Unauthorized user configuration change: $(username)</description>
   </rule>
   
@@ -49,10 +48,8 @@
     <weekday>sat,sun</weekday>
     <description>After-hours configuration change: $(username) on weekend</description>
   </rule>
-</group>
 
-<!-- Machine/Agent Security -->
-<group name="stork_machine_security,">
+  <!-- Machine/Agent Security -->
   <rule id="132200" level="9">
     <decoded_as>stork-machine</decoded_as>
     <field name="machine_action">registered</field>
@@ -65,17 +62,13 @@
     <description>Machine deregistered from Stork: $(machine_name)</description>
   </rule>
   
-  <rule id="132202" level="8">
-    <decoded_as>stork-machine</decoded_as>
+  <rule id="132202" level="8" frequency="3" timeframe="600">
+    <if_matched_sid>132200</if_matched_sid>
     <field name="machine_state">unreachable</field>
-    <frequency>3</frequency>
-    <timeframe>600</timeframe>
     <description>Multiple machines becoming unreachable: Possible network attack</description>
   </rule>
-</group>
 
-<!-- Service Monitoring Security -->
-<group name="stork_service_security,">
+  <!-- Service Monitoring Security -->
   <rule id="132300" level="9">
     <decoded_as>stork-service</decoded_as>
     <field name="service_state">down</field>
@@ -84,26 +77,21 @@
   
   <rule id="132301" level="10">
     <decoded_as>stork-service</decoded_as>
-    <field name="service_name">^(kea-dhcp4|kea-dhcp6|named)$</field>
+    <field name="service_name">kea-dhcp4|kea-dhcp6|named</field>
     <field name="service_state">down</field>
     <description>Critical DNS/DHCP service down: $(service_name) on $(machine_name)</description>
   </rule>
   
-  <rule id="132302" level="8">
-    <decoded_as>stork-service</decoded_as>
-    <field name="service_state">down</field>
+  <rule id="132302" level="8" frequency="3" timeframe="1800">
+    <if_matched_sid>132300</if_matched_sid>
     <same_machine_name />
-    <frequency>3</frequency>
-    <timeframe>1800</timeframe>
     <description>Service flapping: $(service_name) on $(machine_name)</description>
   </rule>
-</group>
 
-<!-- API Security -->
-<group name="stork_api_security,">
+  <!-- API Security -->
   <rule id="132400" level="7">
     <decoded_as>stork-api</decoded_as>
-    <field name="endpoint">/api/settings|/api/machines/\d+/config</field>
+    <field name="endpoint">/api/settings|/api/machines/</field>
     <description>Sensitive API access: $(username) to $(endpoint)</description>
   </rule>
   
@@ -116,13 +104,11 @@
   
   <rule id="132402" level="9">
     <decoded_as>stork-api</decoded_as>
-    <field name="username">^(anonymous|unknown)$</field>
+    <field name="username">anonymous|unknown</field>
     <description>Anonymous API access: $(endpoint) from $(source_ip)</description>
   </rule>
-</group>
 
-<!-- HA/Failover Security -->
-<group name="stork_ha_security,">
+  <!-- HA/Failover Security -->
   <rule id="132500" level="10">
     <decoded_as>stork-ha</decoded_as>
     <description>Stork HA event: $(ha_event) $(old_state) -> $(new_state) for $(machine_name)</description>
@@ -133,47 +119,41 @@
     <field name="new_state">failed</field>
     <description>Stork HA failure: $(machine_name) in failed state</description>
   </rule>
-</group>
 
-<!-- Cross-Service Correlation -->
-<group name="stork_cross_correlation,">
+  <!-- Cross-Service Correlation -->
   <rule id="132600" level="12">
-    <if_sid>132100</if_sid> <!-- Stork config change -->
-    <same_username />
-    <if_matched_sid>131100</if_matched_sid> <!-- Kea config change -->
+    <if_sid>132100</if_sid>
+    <same_user />
+    <if_matched_sid>131100</if_matched_sid>
     <timeframe>300</timeframe>
     <description>Stork configuration change followed by Kea configuration change: $(username)</description>
   </rule>
   
   <rule id="132601" level="11">
-    <if_sid>132300,132301</if_sid> <!-- Service down -->
+    <if_sid>132300,132301</if_sid>
     <same_machine_name />
-    <if_matched_sid>130500</if_matched_sid> <!-- Kea HA failover -->
+    <if_matched_sid>130500</if_matched_sid>
     <timeframe>60</timeframe>
     <description>Service failure correlated with HA event: $(machine_name)</description>
   </rule>
   
-  <rule id="132602" level="10">
-    <if_sid>132000</if_sid> <!-- Stork auth failures -->
+  <rule id="132602" level="10" frequency="5" timeframe="600">
+    <if_matched_sid>132000</if_matched_sid>
     <same_source_ip />
-    <if_matched_sid>131103</if_matched_sid> <!-- Kea control auth failures -->
-    <timeframe>600</timeframe>
+    <if_matched_sid>131103</if_matched_sid>
     <description>Coordinated authentication attacks: $(source_ip) targeting both Stork and Kea</description>
   </rule>
-</group>
 
-<!-- Permission/Security Events -->
-<group name="stork_permission_security,">
+  <!-- Permission/Security Events -->
   <rule id="132700" level="10">
     <decoded_as>stork-security</decoded_as>
     <description>Stork security event: $(security_event) for user $(username)</description>
   </rule>
   
-  <rule id="132701" level="9">
-    <decoded_as>stork-security</decoded_as>
-    <same_username />
-    <frequency>3</frequency>
-    <timeframe>3600</timeframe>
+  <rule id="132701" level="9" frequency="3" timeframe="3600">
+    <if_matched_sid>132700</if_matched_sid>
+    <same_user />
     <description>Repeated permission denials: User $(username)</description>
   </rule>
+
 </group>

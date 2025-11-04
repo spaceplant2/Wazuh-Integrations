@@ -1,5 +1,6 @@
-<!-- Firewall Correlation Rules -->
-<group name="opnsense_firewall,">
+<group name="opnsense,">
+  
+  <!-- Firewall Correlation Rules -->
   <rule id="110100" level="3">
     <decoded_as>opnsense-firewall</decoded_as>
     <field name="action">block</field>
@@ -9,45 +10,36 @@
   <rule id="110101" level="5">
     <decoded_as>opnsense-firewall</decoded_as>
     <field name="action">block</field>
-    <field name="dst_port">^(22|23|3389|5900)$</field>
+    <field name="dst_port">22|23|3389|5900</field>
     <description>OPNsense blocked administrative port access: $(src_ip) -> $(dst_ip):$(dst_port)</description>
   </rule>
   
-  <rule id="110102" level="10">
-    <if_sid>110100</if_sid>
+  <rule id="110102" level="10" frequency="10" timeframe="30">
+    <if_matched_sid>110100</if_matched_sid>
     <same_source_ip />
-    <frequency>10</frequency>
-    <timeframe>30</timeframe>
     <description>Port scanning detected from $(src_ip) - multiple blocked attempts</description>
   </rule>
-</group>
 
-<!-- DHCP Security Rules -->
-<group name="opnsense_dhcp,">
+  <!-- DHCP Security Rules -->
   <rule id="110200" level="7">
     <decoded_as>opnsense-dhcp</decoded_as>
     <field name="dhcp_action">ACK</field>
     <description>New DHCP lease: $(mac) -> $(client_ip)</description>
   </rule>
   
-  <rule id="110201" level="10">
-    <decoded_as>opnsense-dhcp</decoded_as>
-    <field name="dhcp_action">DISCOVER</field>
+  <rule id="110201" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>110200</if_matched_sid>
     <same_mac />
-    <frequency>5</frequency>
-    <timeframe>60</timeframe>
+    <field name="dhcp_action">DISCOVER</field>
     <description>DHCP starvation attempt from MAC $(mac)</description>
   </rule>
-</group>
 
-<!-- Suricata Correlation -->
-<group name="opnsense_suricata,">
+  <!-- Suricata Correlation -->
   <rule id="110300" level="12">
     <decoded_as>opnsense-suricata</decoded_as>
     <description>Suricata alert: $(suricata_signature) - $(src_ip) -> $(dst_ip)</description>
   </rule>
   
-  <!-- Correlate Suricata alerts with firewall blocks -->
   <rule id="110301" level="13">
     <if_sid>110300,110100</if_sid>
     <same_src_ip />
@@ -55,16 +47,15 @@
     <timeframe>10</timeframe>
     <description>Suricata alert followed by firewall block - potential successful attack</description>
   </rule>
-</group>
 
-<!-- Internal Reconnaissance Detection -->
-<group name="opnsense_recon,">
+  <!-- Internal Reconnaissance Detection -->
   <rule id="110400" level="8">
     <decoded_as>opnsense-firewall</decoded_as>
-    <field name="src_ip">^192\.168\.|^10\.</field>
-    <field name="dst_ip">^192\.168\.|^10\.</field>
+    <field name="src_ip">192.168.|10.|172.</field>
+    <field name="dst_ip">192.168.|10.|172.</field>
     <field name="action">block</field>
-    <field name="dst_port">^(445|135|139|1433|3389)$</field>
+    <field name="dst_port">445|135|139|1433|3389</field>
     <description>Internal reconnaissance: $(src_ip) scanning internal service port $(dst_port)</description>
   </rule>
+
 </group>
