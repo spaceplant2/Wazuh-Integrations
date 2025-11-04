@@ -1,46 +1,42 @@
-<!-- DNS Tunneling Detection -->
-<group name="bind9_tunneling,">
-  <rule id="120100" level="10">
+<?xml version="1.0" encoding="UTF-8"?>
+<group name="bind9,">
+  
+  <!-- DNS Query Monitoring -->
+  <rule id="120100" level="0">
     <decoded_as>bind9-query</decoded_as>
+    <description>Bind9: DNS query from $(client_ip) for $(domain) type $(query_type)</description>
+  </rule>
+
+  <!-- DNS Tunneling Detection -->
+  <rule id="120101" level="10">
+    <if_sid>120100</if_sid>
     <field name="domain">\.{50,}</field>
     <description>DNS tunneling suspected: Very long domain name - $(domain)</description>
   </rule>
   
-  <rule id="120101" level="8">
-    <decoded_as>bind9-query</decoded_as>
+  <rule id="120102" level="8">
+    <if_sid>120100</if_sid>
     <field name="domain">[a-zA-Z0-9+/=]{20,}\.</field>
     <description>DNS tunneling suspected: Base64-like encoding - $(domain)</description>
   </rule>
-  
-  <rule id="120102" level="7">
-    <decoded_as>bind9-query</decoded_as>
-    <field name="query_type">^(TXT|NULL|ANY)$</field>
-    <frequency>10</frequency>
-    <timeframe>60</timeframe>
-    <description>Suspicious query type burst: $(query_type) from $(client_ip)</description>
-  </rule>
-</group>
 
-<!-- DGA Detection -->
-<group name="bind9_dga,">
+  <!-- DGA Detection -->
   <rule id="120200" level="7">
-    <decoded_as>bind9-query</decoded_as>
+    <if_sid>120100</if_sid>
     <field name="domain">[bcdfghjklmnpqrstvwxyz]{8,}\.</field>
     <description>Potential DGA domain: Excessive consonants - $(domain)</description>
   </rule>
   
   <rule id="120201" level="8">
-    <decoded_as>bind9-query</decoded_as>
+    <if_sid>120100</if_sid>
     <field name="domain">^[a-z]{10,20}\.(tk|ml|ga|cf)$</field>
     <description>Suspicious Freenom domain - possible DGA: $(domain)</description>
   </rule>
-</group>
 
-<!-- Reconnaissance Detection -->
-<group name="bind9_recon,">
+  <!-- Reconnaissance Detection -->
   <rule id="120300" level="6">
-    <decoded_as>bind9-query</decoded_as>
-    <field name="query_type">^(AXFR|IXFR)$</field>
+    <if_sid>120100</if_sid>
+    <field name="query_type">AXFR|IXFR</field>
     <description>Zone transfer attempt: $(query_type) for $(domain) from $(client_ip)</description>
   </rule>
   
@@ -49,62 +45,48 @@
     <description>Zone transfer completed: $(zone_name) from $(source_ip)</description>
   </rule>
   
-  <rule id="120302" level="7">
-    <decoded_as>bind9-query</decoded_as>
-    <same_src_ip />
-    <frequency>100</frequency>
-    <timeframe>60</timeframe>
+  <rule id="120302" level="7" frequency="100" timeframe="60">
+    <if_sid>120100</if_sid>
+    <same_source_ip />
     <description>DNS reconnaissance: High query volume from $(client_ip)</description>
   </rule>
-</group>
 
-<!-- NXDOMAIN Attacks -->
-<group name="bind9_nxdomain,">
-  <rule id="120400" level="6">
+  <!-- NXDOMAIN Attacks -->
+  <rule id="120400" level="6" frequency="50" timeframe="120">
     <decoded_as>bind9-error</decoded_as>
     <field name="error_type">NXDOMAIN</field>
-    <same_src_ip />
-    <frequency>50</frequency>
-    <timeframe>120</timeframe>
+    <same_source_ip />
     <description>NXDOMAIN burst: Possible DNS cache poisoning from $(client_ip)</description>
   </rule>
-</group>
 
-<!-- Internal Network Scanning -->
-<group name="bind9_internal_scan,">
+  <!-- Internal Network Scanning -->
   <rule id="120500" level="8">
-    <decoded_as>bind9-query</decoded_as>
+    <if_sid>120100</if_sid>
     <field name="domain">(?i)(dc|domain-controller|exchange|sharepoint|sql|oracle|ssh|rdp)\.</field>
     <field name="client_ip">^192\.168\.|^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.</field>
     <description>Internal reconnaissance: Query for internal service $(domain) from $(client_ip)</description>
   </rule>
   
   <rule id="120501" level="9">
-    <decoded_as>bind9-query</decoded_as>
+    <if_sid>120100</if_sid>
     <field name="domain">(?i)_ldap\._tcp\.|_kerberos\.|_domain\.</field>
     <description>Active Directory service discovery attempt from $(client_ip)</description>
   </rule>
-</group>
 
-<!-- Dynamic DNS Abuse -->
-<group name="bind9_dyndns,">
+  <!-- Dynamic DNS Abuse -->
   <rule id="120600" level="6">
-    <decoded_as>bind9-query</decoded_as>
+    <if_sid>120100</if_sid>
     <field name="domain">\.(duckdns|no-ip|dyn|dnsomatic|changeip)\.</field>
     <description>Dynamic DNS domain query: $(domain) from $(client_ip)</description>
   </rule>
   
-  <rule id="120601" level="8">
+  <rule id="120601" level="8" frequency="5" timeframe="300">
     <if_sid>120600</if_sid>
-    <same_src_ip />
-    <frequency>5</frequency>
-    <timeframe>300</timeframe>
+    <same_source_ip />
     <description>Multiple dynamic DNS queries - possible C2 communication</description>
   </rule>
-</group>
 
-<!-- Bind9 Service Security -->
-<group name="bind9_service,">
+  <!-- Bind9 Service Security -->
   <rule id="120700" level="10">
     <decoded_as>bind9-security</decoded_as>
     <description>Bind9 security event: $(security_message)</description>
@@ -115,15 +97,5 @@
     <field name="error_type">denied</field>
     <description>Bind9 access denied: $(error_message)</description>
   </rule>
-</group>
 
-<!-- Correlation with Firewall -->
-<group name="bind9_firewall_correlation,">
-  <rule id="120800" level="10">
-    <if_sid>120100,120101,120200</if_sid> <!-- Tunneling/DGA rules -->
-    <same_src_ip />
-    <if_matched_sid>110100</if_matched_sid> <!-- OPNsense firewall blocks -->
-    <timeframe>300</timeframe>
-    <description>Suspicious DNS activity followed by firewall blocks: $(client_ip)</description>
-  </rule>
 </group>

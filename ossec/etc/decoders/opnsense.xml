@@ -9,7 +9,7 @@
 </decoder>
 
 <decoder name="opnsense-firewall-ip">
-  <parent>opnsense-firewall</parent>
+  <parent>opnsense</parent>
   <regex>(\S+),(\S+),(\S+),(\S+)</regex>
   <order>src_ip, dst_ip, src_port, dst_port</order>
 </decoder>
