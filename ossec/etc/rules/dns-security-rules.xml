@@ -1,47 +1,52 @@
-<!-- DNS Tunneling Detection -->
-<group name="dns_tunneling,">
+<group name="dns-security,">
+  
+  <!-- DNS Tunneling Detection -->
   <rule id="100100" level="10">
     <decoded_as>bind9-query</decoded_as>
-    <field name="domain">\.{50,}</field>
+    <field name="domain">.{50,}</field>
     <description>DNS tunneling suspected: Very long domain name</description>
   </rule>
   
   <rule id="100101" level="8">
     <decoded_as>bind9-query</decoded_as>
-    <field name="domain">[a-zA-Z0-9+/=]{20,}\.</field>
+    <field name="domain">[a-zA-Z0-9+/=]{20,}.</field>
     <description>DNS tunneling suspected: Base64-like encoding in domain</description>
   </rule>
-</group>
 
-<!-- DGA Detection -->
-<group name="dga_detection,">
+  <!-- DGA Detection -->
   <rule id="100200" level="7">
-    <if_sid>100100</if_sid>
-    <field name="domain">[bcdfghjklmnpqrstvwxyz]{8,}\.</field>
+    <decoded_as>bind9-query</decoded_as>
+    <field name="domain">[bcdfghjklmnpqrstvwxyz]{8,}.</field>
     <description>Potential DGA domain: Excessive consonants</description>
   </rule>
-</group>
 
-<!-- DHCP + DNS Correlation -->
-<group name="dhcp_dns_correlation,">
-  <rule id="100300" level="5">
-    <decoded_as>kea-dhcp4-lease</decoded_as>
-    <description>New DHCP lease: $(mac) -> $(ip)</description>
+  <!-- Zone Transfer Security -->
+  <rule id="100300" level="6">
+    <decoded_as>bind9-query</decoded_as>
+    <field name="query_type">AXFR|IXFR</field>
+    <description>Zone transfer attempt</description>
+  </rule>
+
+  <!-- NXDOMAIN Attacks -->
+  <rule id="100400" level="6" frequency="50" timeframe="120">
+    <if_matched_sid>100100</if_matched_sid>
+    <field name="error_type">NXDOMAIN</field>
+    <same_source_ip />
+    <description>NXDOMAIN burst: Possible DNS cache poisoning</description>
+  </rule>
+
+  <!-- Internal Reconnaissance -->
+  <rule id="100500" level="8">
+    <decoded_as>bind9-query</decoded_as>
+    <field name="domain">dc.|domain-controller.|exchange.|sharepoint.|sql.|oracle.|ssh.|rdp.</field>
+    <field name="client_ip">192.168.|10.|172.</field>
+    <description>Internal reconnaissance: Query for internal service</description>
   </rule>
   
-  <rule id="100301" level="10" timeframe="300">
-    <if_sid>100300</if_sid>
-    <same_source_ip />
-    <description>Suspicious DNS activity from newly leased IP $(ip)</description>
+  <rule id="100501" level="9">
+    <decoded_as>bind9-query</decoded_as>
+    <field name="domain">_ldap._tcp.|_kerberos.|_domain.</field>
+    <description>Active Directory service discovery attempt</description>
   </rule>
-</group>
 
-<group name="pihole_security,">
-  <rule id="100400" level="7">
-    <program_name>pihole-FTL</program_name>
-    <field name="dnsmasq.log">blocked</field>
-    <frequency>50</frequency>
-    <timeframe>60</timeframe>
-    <description>High volume of blocked domains from single client</description>
-  </rule>
 </group>
