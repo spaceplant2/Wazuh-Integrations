@@ -1,13 +1,13 @@
 <!-- DNS Tunneling Detection -->
 <group name="dns_tunneling,">
   <rule id="100100" level="10">
-    <decoded_as>dns-query</decoded_as>
+    <decoded_as>bind9-query</decoded_as>
     <field name="domain">\.{50,}</field>
     <description>DNS tunneling suspected: Very long domain name</description>
   </rule>
   
   <rule id="100101" level="8">
-    <decoded_as>dns-query</decoded_as>
+    <decoded_as>bind9-query</decoded_as>
     <field name="domain">[a-zA-Z0-9+/=]{20,}\.</field>
     <description>DNS tunneling suspected: Base64-like encoding in domain</description>
   </rule>
