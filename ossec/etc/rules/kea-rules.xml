@@ -15,7 +15,7 @@
   <!-- DHCP Starvation Attacks -->
   <rule id="130200" level="8" frequency="10" timeframe="60">
     <if_matched_sid>130101</if_matched_sid>
-    <same_mac />
+    <same_field>mac_address</same_field>
     <description>DHCP starvation attempt: Multiple leases to MAC $(mac_address)</description>
   </rule>
   
