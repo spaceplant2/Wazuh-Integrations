@@ -1,9 +1,14 @@
 <group name="stork,">
   
   <!-- Authentication Security -->
-  <rule id="132000" level="8" frequency="5" timeframe="300">
+  <rule id="132050" level="0">
     <decoded_as>stork-auth</decoded_as>
     <field name="auth_action">failed to log in</field>
+    <description>Stork authentication failure: $(username) from $(source_ip)</description>
+  </rule>
+
+  <rule id="132000" level="8" frequency="5" timeframe="300">
+    <if_matched_sid>132050</if_matched_sid>
     <same_user />
     <description>Stork brute force attempt: User $(username) from $(source_ip)</description>
   </rule>
