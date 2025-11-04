@@ -21,7 +21,7 @@
   
   <rule id="130201" level="7" frequency="15" timeframe="120">
     <if_matched_sid>130101</if_matched_sid>
-    <same_mac />
+    <same_field>mac_address</same_field>
     <description>Rapid DHCP release/request cycle: Possible starvation - MAC $(mac_address)</description>
   </rule>
 
@@ -70,7 +70,7 @@
   <!-- DHCP + DNS Correlation -->
   <rule id="130600" level="10">
     <if_sid>130100,130200</if_sid>
-    <same_mac />
+    <same_field>mac_address</same_field>
     <if_matched_sid>120100,120101</if_matched_sid>
     <timeframe>600</timeframe>
     <description>Suspicious DHCP client $(mac_address) also showing DNS tunneling behavior</description>
@@ -87,7 +87,7 @@
   <!-- Rapid IP Changes -->
   <rule id="130700" level="7" frequency="3" timeframe="300">
     <if_matched_sid>130101</if_matched_sid>
-    <same_mac />
+    <same_field>mac_address</same_field>
     <different_ip>client_ip</different_ip>
     <description>Rapid IP changes for MAC $(mac_address) - possible MAC spoofing</description>
   </rule>
