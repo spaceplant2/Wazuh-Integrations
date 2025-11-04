@@ -20,8 +20,6 @@
     <description>After-hours Stork login: $(username) from $(source_ip)</description>
   </rule>
 
-  <!-- ... rest of stork rules with frequency/timeframe moved to rule attributes ... -->
-
   <rule id="132202" level="8" frequency="3" timeframe="1800">
     <if_matched_sid>132200</if_matched_sid>
     <field name="machine_state">unreachable</field>
@@ -30,7 +28,7 @@
 
   <rule id="132302" level="8" frequency="3" timeframe="1800">
     <if_matched_sid>132300</if_matched_sid>
-    <same_hostname />
+    <same_system_name />
     <description>Service flapping: $(service_name) on $(machine_name)</description>
   </rule>
 
