@@ -88,7 +88,7 @@
   <rule id="130700" level="7" frequency="3" timeframe="300">
     <if_matched_sid>130101</if_matched_sid>
     <same_field>mac_address</same_field>
-    <different_src_ip />
+    <different_srcip />
     <description>Rapid IP changes for MAC $(mac_address) - possible MAC spoofing</description>
   </rule>
 
