@@ -29,10 +29,9 @@
     <description>New DHCP lease: $(mac) -> $(ip)</description>
   </rule>
   
-  <rule id="100301" level="10">
+  <rule id="100301" level="10" timeframe="300">
     <if_sid>100300</if_sid>
     <same_source_ip />
-    <timeframe>300</timeframe>
     <description>Suspicious DNS activity from newly leased IP $(ip)</description>
   </rule>
 </group>
