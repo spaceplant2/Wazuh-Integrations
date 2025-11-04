@@ -4,13 +4,13 @@
 
 <decoder name="pihole-query">
   <parent>pihole</parent>
-  <regex>query\[(\S+)\] (\S+) from (\S+)</regex>
+  <regex>query[(\S+)] (\S+) from (\S+)</regex>
   <order>query_type, domain, client_ip</order>
 </decoder>
 
 <decoder name="pihole-blocked">
   <parent>pihole</parent>
-  <regex>\/etc\/pihole\/gravity\.list (\S+) is (\S+)</regex>
+  <regex>/etc/pihole/gravity.list (\S+) is (\S+)</regex>
   <order>domain, action</order>
 </decoder>
 
