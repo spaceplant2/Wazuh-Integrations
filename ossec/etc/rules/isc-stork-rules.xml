@@ -12,7 +12,7 @@
     <same_user />
     <description>Stork brute force attempt: User $(username) from $(source_ip)</description>
   </rule>
-  
+
   <rule id="132001" level="7">
     <decoded_as>stork-auth</decoded_as>
     <field name="auth_action">logged in</field>
@@ -30,7 +30,7 @@
 
   <rule id="132302" level="8" frequency="3" timeframe="1800">
     <if_matched_sid>132300</if_matched_sid>
-    <same_machine_name />
+    <same_hostname />
     <description>Service flapping: $(service_name) on $(machine_name)</description>
   </rule>
 
