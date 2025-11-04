@@ -1,25 +1,27 @@
-<decoder name="dns-query">
-  <program_name>^named|pihole-FTL|dnsmasq</program_name>
+<decoder name="dns-security">
+  <program_name>named</program_name>
 </decoder>
 
-<decoder name="dns-query">
-  <parent>dns-query</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
-  <regex>query: (\S+) (\S+) (\S+) (\S+) (\S+)</regex>
-  <order>src_ip, query_type, domain, query_class, protocol</order>
+<decoder name="dns-tunneling-attempt">
+  <parent>dns-security</parent>
+  <regex>client (\S+)#(\d+): query: (.+) (\S+) (\S+)</regex>
+  <order>client_ip, client_port, domain, query_type, query_class</order>
 </decoder>
 
-<decoder name="kea-dhcp4">
-  <program_name>kea-dhcp4</program_name>
+<decoder name="dns-dga-detection">
+  <parent>dns-security</parent>
+  <regex>client (\S+)#(\d+): query: (.+) (\S+) (\S+)</regex>
+  <order>client_ip, client_port, domain, query_type, query_class</order>
 </decoder>
 
-<decoder name="kea-dhcp6">
-  <program_name>kea-dhcp6</program_name>
+<decoder name="dns-zone-transfer-attempt">
+  <parent>dns-security</parent>
+  <regex>client (\S+)#(\d+): query: (\S+) (\S+) (\S+)</regex>
+  <order>client_ip, client_port, domain, query_type, query_class</order>
 </decoder>
 
-<decoder name="kea-lease4">
-  <parent>kea-dhcp</parent>
-  <prematch>^\S+ \d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
-  <regex>LEASE4_(\S+) \[hwaddr=(\S+)] \[ciaddr=(\S+)]</regex>
-  <order>lease_action, mac, ip</order>
+<decoder name="dns-reconnaissance">
+  <parent>dns-security</parent>
+  <regex>client (\S+)#(\d+): query: (.+) (\S+) (\S+)</regex>
+  <order>client_ip, client_port, domain, query_type, query_class</order>
 </decoder>

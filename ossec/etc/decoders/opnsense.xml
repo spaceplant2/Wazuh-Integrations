@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <decoder name="opnsense">
-  <program_name>^opnsense</program_name>
-  <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ opnsense\[?\d*\]?:</prematch>
+  <program_name>opnsense</program_name>
 </decoder>
 
 <decoder name="opnsense-firewall">
