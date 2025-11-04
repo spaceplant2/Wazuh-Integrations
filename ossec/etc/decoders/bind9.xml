@@ -4,8 +4,8 @@
 
 <decoder name="bind9-query">
   <parent>bind9</parent>
-  <regex>client (\S+)#(\d+) \(([^)]+)\): query: (\S+) (\S+) (\S+) \((\S+)\)</regex>
-  <order>client_ip, client_port, client_name, domain, query_type, query_class, src_interface</order>
+  <regex>client \S+ (\S+)#(\d+) \((\S+)\): query: (\S+) (\S+) (\S+)</regex>
+  <order>client_ip, client_port, client_name, domain, query_type, query_class</order>
 </decoder>
 
 <decoder name="bind9-query-alt">
