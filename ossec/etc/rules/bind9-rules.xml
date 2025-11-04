@@ -28,7 +28,7 @@
   
   <rule id="120201" level="8">
     <if_sid>120100</if_sid>
-    <field name="domain">[a-z]{10,20}\.(tk|ml|ga|cf)</field>
+    <field name="domain">tk|ml|ga|cf</field>
     <description>Suspicious Freenom domain - possible DGA: $(domain)</description>
   </rule>
 
@@ -45,14 +45,14 @@
   </rule>
   
   <rule id="120302" level="7" frequency="100" timeframe="60">
-    <if_sid>120100</if_sid>
+    <if_matched_sid>120100</if_matched_sid>
     <same_source_ip />
     <description>DNS reconnaissance: High query volume from $(client_ip)</description>
   </rule>
 
   <!-- NXDOMAIN Attacks -->
   <rule id="120400" level="6" frequency="50" timeframe="120">
-    <decoded_as>bind9-error</decoded_as>
+    <if_matched_sid>120100</if_matched_sid>
     <field name="error_type">NXDOMAIN</field>
     <same_source_ip />
     <description>NXDOMAIN burst: Possible DNS cache poisoning from $(client_ip)</description>
@@ -61,26 +61,26 @@
   <!-- Internal Network Scanning -->
   <rule id="120500" level="8">
     <if_sid>120100</if_sid>
-    <field name="domain">(?i)(dc|domain-controller|exchange|sharepoint|sql|oracle|ssh|rdp)\.</field>
+    <field name="domain">dc|domain-controller|exchange|sharepoint|sql|oracle|ssh|rdp</field>
     <field name="client_ip">192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.</field>
     <description>Internal reconnaissance: Query for internal service $(domain) from $(client_ip)</description>
   </rule>
   
   <rule id="120501" level="9">
     <if_sid>120100</if_sid>
-    <field name="domain">(?i)_ldap\._tcp\.|_kerberos\.|_domain\.</field>
+    <field name="domain">_ldap\._tcp\.|_kerberos\.|_domain\.</field>
     <description>Active Directory service discovery attempt from $(client_ip)</description>
   </rule>
 
   <!-- Dynamic DNS Abuse -->
   <rule id="120600" level="6">
     <if_sid>120100</if_sid>
-    <field name="domain">\.(duckdns|no-ip|dyn|dnsomatic|changeip)\.</field>
+    <field name="domain">duckdns|no-ip|dyn|dnsomatic|changeip</field>
     <description>Dynamic DNS domain query: $(domain) from $(client_ip)</description>
   </rule>
   
   <rule id="120601" level="8" frequency="5" timeframe="300">
-    <if_sid>120600</if_sid>
+    <if_matched_sid>120600</if_matched_sid>
     <same_source_ip />
     <description>Multiple dynamic DNS queries - possible C2 communication</description>
   </rule>
