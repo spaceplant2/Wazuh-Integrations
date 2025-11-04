@@ -52,7 +52,7 @@
   <!-- Correlation with Upstream DNS -->
   <rule id="100508" level="8">
     <if_sid>100500,100100</if_sid>
-    <same_domain />
+    <same_field>domain</same_field>
     <timeframe>10</timeframe>
     <description>Pi-hole: Suspicious domain $(domain) detected both at Pi-hole and upstream DNS</description>
   </rule>
@@ -69,7 +69,7 @@
   <rule id="100510" level="6" frequency="5" timeframe="120">
     <if_matched_sid>100500</if_matched_sid>
     <field name="query_type">TXT|NULL|ANY</field>
-    <same_source_ip />
+    <same_srcip />
     <description>Pi-hole: Suspicious query type burst - $(query_type) from $(client_ip)</description>
   </rule>
 
