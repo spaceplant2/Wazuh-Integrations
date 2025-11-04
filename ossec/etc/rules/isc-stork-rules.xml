@@ -22,7 +22,7 @@
 
   <!-- ... rest of stork rules with frequency/timeframe moved to rule attributes ... -->
 
-  <rule id="132202" level="8" frequency="3" timeframe="600">
+  <rule id="132202" level="8" frequency="3" timeframe="1800">
     <if_matched_sid>132200</if_matched_sid>
     <field name="machine_state">unreachable</field>
     <description>Multiple machines becoming unreachable: Possible network attack</description>
