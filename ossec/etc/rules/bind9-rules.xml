@@ -62,7 +62,7 @@
   <rule id="120500" level="8">
     <if_sid>120100</if_sid>
     <field name="domain">dc|domain-controller|exchange|sharepoint|sql|oracle|ssh|rdp</field>
-    <field name="client_ip">192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.</field>
+    <field name="client_ip">192.168.|10.|172.</field>
     <description>Internal reconnaissance: Query for internal service $(domain) from $(client_ip)</description>
   </rule>
   
