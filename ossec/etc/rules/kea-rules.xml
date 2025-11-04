@@ -42,7 +42,7 @@
   <rule id="130400" level="8" frequency="5" timeframe="300">
     <if_matched_sid>130101</if_matched_sid>
     <field name="lease_type">IA_NA</field>
-    <same_<same_field>duid</same_field> />
+    <same_field>duid</same_field>
     <description>Multiple IPv6 leases to same DUID: Possible SLAAC abuse - $(duid)</description>
   </rule>
   
