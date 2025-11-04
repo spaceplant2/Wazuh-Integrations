@@ -50,7 +50,6 @@
     <decoded_as>opnsense-firewall</decoded_as>
     <field name="src_ip">192.168.|10.|172.</field>
     <field name="dst_ip">192.168.|10.|172.</field>
-    <field name="action">block</field>
     <field name="dst_port">445|135|139|1433|3389</field>
     <description>Internal reconnaissance: $(src_ip) scanning internal service port $(dst_port)</description>
   </rule>
