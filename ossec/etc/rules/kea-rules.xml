@@ -78,7 +78,7 @@
   
   <rule id="130601" level="9">
     <if_sid>130300</if_sid>
-    <same_src_ip />
+    <same_srcip />
     <if_matched_sid>120300,120302</if_matched_sid>
     <timeframe>300</timeframe>
     <description>Suspicious DHCP lease $(client_ip) performing DNS reconnaissance</description>
