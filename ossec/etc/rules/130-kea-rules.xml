@@ -81,7 +81,7 @@
 
   <!-- DHCP + DNS Correlation -->
   <rule id="130600" level="10">
-    <if_sid>130100,130200</if_sid>
+    <if_sid>130100, 130200</if_sid>
     <same_field>mac_address</same_field>
     <if_matched_sid>120100,120101</if_matched_sid>
     <timeframe>600</timeframe>
