@@ -83,7 +83,6 @@
   <rule id="130600" level="10">
     <if_sid>130100, 130200, 120100, 120101</if_sid>
     <same_field>mac_address</same_field>
-    <timeframe>600</timeframe>
     <description>Suspicious DHCP client $(mac_address) also showing DNS tunneling behavior</description>
   </rule>
   
