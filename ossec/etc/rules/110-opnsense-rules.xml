@@ -39,7 +39,7 @@
   </rule>
   
   <rule id="110301" level="13" timeframe="10">
-    <if_matched_sid>110300,110100</if_matched_sid>
+    <if_sid>110300, 110100</if_sid>
     <same_srcip />
     <same_dstip />
     <description>Suricata alert followed by firewall block - potential successful attack</description>
