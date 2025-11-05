@@ -35,15 +35,17 @@
     <description>NXDOMAIN burst: Possible DNS cache poisoning</description>
   </rule>
 
+  <!-- Pihole specific rules live at 1005xx -->
+
   <!-- Internal Reconnaissance -->
-  <rule id="100500" level="8">
+  <rule id="100600" level="8">
     <decoded_as>bind9-query</decoded_as>
     <field name="domain">dc.|domain-controller.|exchange.|sharepoint.|sql.|oracle.|ssh.|rdp.</field>
     <field name="client_ip">192.168.|10.|172.</field>
     <description>Internal reconnaissance: Query for internal service</description>
   </rule>
   
-  <rule id="100501" level="9">
+  <rule id="100601" level="9">
     <decoded_as>bind9-query</decoded_as>
     <field name="domain">_ldap._tcp.|_kerberos.|_domain.</field>
     <description>Active Directory service discovery attempt</description>
