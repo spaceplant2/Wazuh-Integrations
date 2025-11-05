@@ -91,10 +91,9 @@
     <description>Suspicious DHCP client $(mac_address) also showing DNS tunneling behavior</description>
   </rule>
 
-  <rule id="130601" level="9">
+  <rule id="130602" level="9">
     <if_sid>130300, 120300, 120302</if_sid>
     <same_srcip />
-    <timeframe>300</timeframe>
     <description>Suspicious DHCP lease $(client_ip) performing DNS reconnaissance</description>
   </rule>
 
