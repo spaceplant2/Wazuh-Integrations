@@ -12,6 +12,12 @@
     <description>Suspicious DHCP lease: Invalid IP $(client_ip) to MAC $(mac_address)</description>
   </rule>
 
+  <rule id="130103" level="0">
+    <decoded_as>kea-control-auth</decoded_as>
+    <field name="auth_action">FAILED</field>
+    <description>Kea Control Agent: Authentication failed for user $(username) from $(source_ip)</description>
+  </rule>
+
   <!-- DHCP Starvation Attacks -->
   <rule id="130200" level="8" frequency="10" timeframe="60">
     <if_matched_sid>130101</if_matched_sid>

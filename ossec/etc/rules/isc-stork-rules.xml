@@ -20,10 +20,22 @@
     <description>After-hours Stork login: $(username) from $(source_ip)</description>
   </rule>
 
+  <rule id="132200" level="0">
+    <decoded_as>stork-machine</decoded_as>
+    <field name="machine_state">unreachable</field>
+    <description>Stork: Machine $(machine_name) became unreachable</description>
+  </rule>
+
   <rule id="132202" level="8" frequency="3" timeframe="1800">
     <if_matched_sid>132200</if_matched_sid>
     <field name="machine_state">unreachable</field>
     <description>Multiple machines becoming unreachable: Possible network attack</description>
+  </rule>
+
+  <rule id="132300" level="0">
+    <decoded_as>stork-service</decoded_as>
+    <field name="service_state">down</field>
+    <description>Stork: Service $(service_name) on $(machine_name) is down</description>
   </rule>
 
   <rule id="132302" level="8" frequency="3" timeframe="1800">
