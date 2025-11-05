@@ -51,7 +51,7 @@
 
   <!-- Correlation with Upstream DNS -->
   <rule id="100508" level="8" timeframe="10">
-    <if_matched>100500, 100100</if_matched>
+    <if_matched_sid>100500, 100100</if_matched_sid>
     <same_field>domain</same_field>
     <description>Pi-hole: Suspicious domain $(domain) detected both at Pi-hole and upstream DNS</description>
   </rule>
