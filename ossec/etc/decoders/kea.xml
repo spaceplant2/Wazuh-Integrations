@@ -37,3 +37,16 @@
   <regex>HA_(\S+) [partner=(\S+)] [state=(\S+)]</regex>
   <order>ha_event, partner, state</order>
 </decoder>
+
+<decoder name="kea-control-auth">
+  <parent>kea</parent>
+  <regex>CONTROL_AGENT_AUTH (\S+) [user=(\S+)] [source_ip=(\S+)]</regex>
+  <order>auth_action, username, source_ip</order>
+</decoder>
+
+<decoder name="kea-security">
+  <parent>kea</parent>
+  <regex>SECURITY_EVENT [event=(.+)] [user=(\S+)]</regex>
+  <order>security_event, username</order>
+</decoder>
+

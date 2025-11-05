@@ -18,6 +18,12 @@
     <description>Kea Control Agent: Authentication failed for user $(username) from $(source_ip)</description>
   </rule>
 
+  <rule id="130102" level="8" frequency="5" timeframe="300">
+    <if_matched_sid>130103</if_matched_sid>
+    <same_user />
+    <description>Kea Control Agent brute force attempt: User $(username) from $(source_ip)</description>
+  </rule>
+
   <!-- DHCP Starvation Attacks -->
   <rule id="130200" level="8" frequency="10" timeframe="60">
     <if_matched_sid>130101</if_matched_sid>
