@@ -18,7 +18,7 @@
     <description>Kea Control Agent: Authentication failed for user $(username) from $(source_ip)</description>
   </rule>
 
-  <rule id="130102" level="8" frequency="5" timeframe="300">
+  <rule id="130104" level="8" frequency="5" timeframe="300">
     <if_matched_sid>130103</if_matched_sid>
     <same_user />
     <description>Kea Control Agent brute force attempt: User $(username) from $(source_ip)</description>
