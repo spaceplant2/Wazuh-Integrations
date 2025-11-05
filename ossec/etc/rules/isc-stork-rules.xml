@@ -51,6 +51,11 @@
     <description>Coordinated authentication attacks: $(source_ip) targeting both Stork and Kea</description>
   </rule>
 
+  <rule id="132700" level="0">
+    <decoded_as>stork-security</decoded_as>
+    <description>Stork security event: $(security_event) for user $(username)</description>
+  </rule>
+
   <rule id="132701" level="9" frequency="3" timeframe="3600">
     <if_matched_sid>132700</if_matched_sid>
     <same_user />
