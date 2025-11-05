@@ -80,12 +80,17 @@
   </rule>
 
   <!-- DHCP + DNS Correlation -->
-  <rule id="130600" level="10">
-    <if_sid>130100, 130200, 120100, 120101</if_sid>
+  <rule id="130600" level="0">
+    <if_sid>130100,130200,120100,120101</if_sid>
+    <description>Suspicious network events</description>
+  </rule>
+
+  <rule id="130601" level="10">
+    <if_matched_sid>130600</if_matched_sid>
     <same_field>mac_address</same_field>
     <description>Suspicious DHCP client $(mac_address) also showing DNS tunneling behavior</description>
   </rule>
-  
+
   <rule id="130601" level="9">
     <if_sid>130300, 120300, 120302</if_sid>
     <same_srcip />
