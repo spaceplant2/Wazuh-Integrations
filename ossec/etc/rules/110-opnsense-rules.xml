@@ -37,9 +37,14 @@
     <decoded_as>opnsense-suricata</decoded_as>
     <description>Suricata alert: $(suricata_signature) - $(src_ip) -> $(dst_ip)</description>
   </rule>
-  
-  <rule id="110301" level="13" timeframe="10">
-    <if_sid>110300, 110100</if_sid>
+
+  <rule id="110301" level="0">
+    <if_sid>110100,110300</if_sid>
+    <description>OPNsense security events</description>
+  </rule>
+
+  <rule id="110302" level="13" timeframe="10">
+    <if_matched_sid>110099</if_matched_sid>
     <same_srcip />
     <same_dstip />
     <description>Suricata alert followed by firewall block - potential successful attack</description>
