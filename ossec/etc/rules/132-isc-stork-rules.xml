@@ -1,12 +1,5 @@
 <group name="stork,">
   
-  <!-- Authentication Security -->
-  <rule id="132050" level="0">
-    <decoded_as>stork-auth</decoded_as>
-    <field name="auth_action">failed to log in</field>
-    <description>Stork authentication failure: $(username) from $(source_ip)</description>
-  </rule>
-
   <rule id="132000" level="8" frequency="5" timeframe="300">
     <if_matched_sid>132050</if_matched_sid>
     <same_user />
@@ -18,6 +11,19 @@
     <field name="auth_action">logged in</field>
     <time>20:00-06:00</time>
     <description>After-hours Stork login: $(username) from $(source_ip)</description>
+  </rule>
+
+  <!-- Authentication Security -->
+  <rule id="132050" level="0">
+    <decoded_as>stork-auth</decoded_as>
+    <field name="auth_action">failed to log in</field>
+    <description>Stork authentication failure: $(username) from $(source_ip)</description>
+  </rule>
+  
+  <rule id="132051" level="9" frequency="5" timeframe="300">
+    <if_matched_sid>132050</if_matched_sid>
+    <same_user />
+    <description>Stork authentication brute force: User $(username) from $(source_ip)</description>
   </rule>
 
   <rule id="132200" level="0">
@@ -47,7 +53,6 @@
   <rule id="132602" level="10" frequency="5" timeframe="600">
     <if_matched_sid>132000</if_matched_sid>
     <same_source_ip />
-    <if_matched_sid>131103</if_matched_sid>
     <description>Coordinated authentication attacks: $(source_ip) targeting both Stork and Kea</description>
   </rule>
 
