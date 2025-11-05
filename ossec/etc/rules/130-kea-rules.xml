@@ -91,11 +91,29 @@
     <description>Suspicious DHCP client $(mac_address) also showing DNS tunneling behavior</description>
   </rule>
 
-  <rule id="130602" level="9">
+
+  <rule id="130602" level="0">
     <if_sid>130300, 120300, 120302</if_sid>
+    <description>Suspicious DHCP lease performing DNS reconnaissance</description>
+  </rule>
+
+  <rule id="130603" level="9">
+    <if_match_sid>130602</if_match_sid>
     <same_srcip />
     <description>Suspicious DHCP lease $(client_ip) performing DNS reconnaissance</description>
   </rule>
+
+  <rule id="130604" level="0">
+    <if_sid>130300, 120200, 120201</if_sid>
+    <description>Suspicious network events parent</description>
+  </rule>
+
+  <rule id="130605" level="9">
+    <if_match_sid>130604</if_match_sid>
+    <same_srcip />
+    <description>Suspicious DHCP lease $(client_ip) querying potential DGA domains</description>
+  </rule>
+
 
   <!-- Rapid IP Changes -->
   <rule id="130700" level="7" frequency="3" timeframe="300">
