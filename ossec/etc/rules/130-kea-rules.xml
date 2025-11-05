@@ -98,7 +98,7 @@
   </rule>
 
   <rule id="130603" level="9">
-    <if_match_sid>130602</if_match_sid>
+    <if_matched_sid>130602</if_matched_sid>
     <same_srcip />
     <description>Suspicious DHCP lease $(client_ip) performing DNS reconnaissance</description>
   </rule>
@@ -109,7 +109,7 @@
   </rule>
 
   <rule id="130605" level="9">
-    <if_match_sid>130604</if_match_sid>
+    <if_matched_sid>130604</if_matched_sid>
     <same_srcip />
     <description>Suspicious DHCP lease $(client_ip) querying potential DGA domains</description>
   </rule>
