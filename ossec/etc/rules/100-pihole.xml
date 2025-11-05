@@ -56,6 +56,25 @@
     <description>Pi-hole: Suspicious domain $(domain) detected both at Pi-hole and upstream DNS</description>
   </rule>
 
+<!--fixme-->
+<rule id="100508a" level="0">
+  <if_sid>100500</if_sid>
+  <same_field>domain</same_field>
+  <description>Pi-hole query for domain $(domain)</description>
+</rule>
+
+<rule id="100508b" level="0">
+  <if_sid>100100</if_sid>
+  <same_field>domain</same_field>
+  <description>Upstream DNS query for domain $(domain)</description>
+</rule>
+
+<rule id="100508" level="8" timeframe="10">
+  <if_matched_sid>100508a,100508b</if_matched_sid>
+  <description>Pi-hole: Suspicious domain $(domain) detected both at Pi-hole and upstream DNS</description>
+</rule>
+<!--fixme-->
+
   <!-- Bypass Attempt Detection -->
   <rule id="100509" level="10">
     <if_sid>100500</if_sid>
