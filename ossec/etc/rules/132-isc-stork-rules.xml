@@ -1,0 +1,70 @@
+<group name="stork,">
+
+  <!-- Authentication Security -->
+  <rule id="132050" level="0">
+    <decoded_as>stork-auth</decoded_as>
+    <field name="auth_action">failed to log in</field>
+    <description>Stork authentication failure: $(username) from $(source_ip)</description>
+  </rule>
+  
+  <rule id="132000" level="8" frequency="5" timeframe="300">
+    <if_matched_sid>132050</if_matched_sid>
+    <same_user />
+    <description>Stork brute force attempt: User $(username) from $(source_ip)</description>
+  </rule>
+
+  <rule id="132001" level="7">
+    <decoded_as>stork-auth</decoded_as>
+    <field name="auth_action">logged in</field>
+    <time>20:00-06:00</time>
+    <description>After-hours Stork login: $(username) from $(source_ip)</description>
+  </rule>
+  
+  <rule id="132051" level="9" frequency="5" timeframe="300">
+    <if_matched_sid>132050</if_matched_sid>
+    <same_user />
+    <description>Stork authentication brute force: User $(username) from $(source_ip)</description>
+  </rule>
+
+  <rule id="132200" level="0">
+    <decoded_as>stork-machine</decoded_as>
+    <field name="machine_state">unreachable</field>
+    <description>Stork: Machine $(machine_name) became unreachable</description>
+  </rule>
+
+  <rule id="132202" level="8" frequency="3" timeframe="1800">
+    <if_matched_sid>132200</if_matched_sid>
+    <field name="machine_state">unreachable</field>
+    <description>Multiple machines becoming unreachable: Possible network attack</description>
+  </rule>
+
+  <rule id="132300" level="0">
+    <decoded_as>stork-service</decoded_as>
+    <field name="service_state">down</field>
+    <description>Stork: Service $(service_name) on $(machine_name) is down</description>
+  </rule>
+
+  <rule id="132302" level="8" frequency="3" timeframe="1800">
+    <if_matched_sid>132300</if_matched_sid>
+    <same_system_name />
+    <description>Service flapping: $(service_name) on $(machine_name)</description>
+  </rule>
+
+  <rule id="132602" level="10" frequency="5" timeframe="600">
+    <if_matched_sid>132000</if_matched_sid>
+    <same_source_ip />
+    <description>Coordinated authentication attacks: $(source_ip) targeting both Stork and Kea</description>
+  </rule>
+
+  <rule id="132700" level="0">
+    <decoded_as>stork-security</decoded_as>
+    <description>Stork security event: $(security_event) for user $(username)</description>
+  </rule>
+
+  <rule id="132701" level="9" frequency="3" timeframe="3600">
+    <if_matched_sid>132700</if_matched_sid>
+    <same_user />
+    <description>Repeated permission denials: User $(username)</description>
+  </rule>
+
+</group>

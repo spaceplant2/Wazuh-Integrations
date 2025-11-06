@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <decoder name="opnsense">
-  <program_name>^opnsense</program_name>
-  <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ opnsense\[?\d*\]?:</prematch>
+  <program_name>opnsense</program_name>
 </decoder>
 
 <decoder name="opnsense-firewall">
@@ -11,7 +9,7 @@
 </decoder>
 
 <decoder name="opnsense-firewall-ip">
-  <parent>opnsense-firewall</parent>
+  <parent>opnsense</parent>
   <regex>(\S+),(\S+),(\S+),(\S+)</regex>
   <order>src_ip, dst_ip, src_port, dst_port</order>
 </decoder>
@@ -24,6 +22,6 @@
 
 <decoder name="opnsense-suricata">
   <parent>opnsense</parent>
-  <regex>suricata: \[\*\] (.+) \[\*\] (.+) \[\*\] (.+)</regex>
+  <regex>suricata: [*] (.+) [*] (.+) [*] (.+)</regex>
   <order>suricata_signature, src_ip, dst_ip</order>
 </decoder>

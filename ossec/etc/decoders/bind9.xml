@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <decoder name="bind9">
-  <program_name>^named</program_name>
-  <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ named\[\d+\]:</prematch>
+  <program_name>named</program_name>
 </decoder>
 
 <decoder name="bind9-query">
   <parent>bind9</parent>
-  <regex>client (\S+)#\d+ \(([^)]+)\): query: (\S+) (\S+) (\S+) \((\S+)\)</regex>
-  <order>client_ip, client_name, domain, query_type, query_class, src_interface</order>
+  <regex>client \S+ (\S+)#(\d+) \((\S+)\): query: (\S+) (\S+) (\S+)</regex>
+  <order>client_ip, client_port, client_name, domain, query_type, query_class</order>
 </decoder>
 
 <decoder name="bind9-query-alt">
@@ -30,8 +28,8 @@
 
 <decoder name="bind9-zone-xfer">
   <parent>bind9</parent>
-  <regex>transfer of '(\S+)' from (\S+): .+</regex>
-  <order>zone_name, source_ip</order>
+  <regex>transfer of '(\S+)' from (\S+): (.+)</regex>
+  <order>zone_name, source_ip, transfer_details</order>
 </decoder>
 
 <decoder name="bind9-error">

@@ -1,47 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<decoder name="isc-stork">
-  <program_name>^stork</program_name>
-  <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ stork\[?\d*\]?:</prematch>
+<decoder name="stork">
+  <program_name>stork</program_name>
 </decoder>
 
 <decoder name="stork-auth">
-  <parent>isc-stork</parent>
-  <regex>user '(\S+)' (logged in|failed to log in|logged out) from (\S+)</regex>
-  <order>username, auth_action, source_ip</order>
+  <parent>stork</parent>
+  <regex>user '(\S+)' (\S+) (\S+) from (\S+)</regex>
+  <order>username, auth_action, auth_status, source_ip</order>
 </decoder>
 
 <decoder name="stork-config">
-  <parent>isc-stork</parent>
-  <regex>configuration (updated|changed|applied) by user '(\S+)'</regex>
+  <parent>stork</parent>
+  <regex>configuration (\S+) by user '(\S+)'</regex>
   <order>config_action, username</order>
 </decoder>
 
 <decoder name="stork-machine">
-  <parent>isc-stork</parent>
-  <regex>machine '(\S+)' (registered|deregistered|state changed to (\S+))</regex>
-  <order>machine_name, machine_action, machine_state</order>
+  <parent>stork</parent>
+  <regex>machine '(\S+)' (\S+)</regex>
+  <order>machine_name, machine_action</order>
 </decoder>
 
 <decoder name="stork-service">
-  <parent>isc-stork</parent>
+  <parent>stork</parent>
   <regex>service '(\S+)' on machine '(\S+)' is now (\S+)</regex>
   <order>service_name, machine_name, service_state</order>
 </decoder>
 
 <decoder name="stork-security">
-  <parent>isc-stork</parent>
-  <regex>security: (access denied|unauthorized attempt|permission denied) for user '(\S+)'</regex>
+  <parent>stork</parent>
+  <regex>security: (\S+) for user '(\S+)'</regex>
   <order>security_event, username</order>
 </decoder>
 
 <decoder name="stork-ha">
-  <parent>isc-stork</parent>
-  <regex>HA (failover|state change): (\S+) -> (\S+) for machine '(\S+)'</regex>
+  <parent>stork</parent>
+  <regex>HA (\S+): (\S+) -> (\S+) for machine '(\S+)'</regex>
   <order>ha_event, old_state, new_state, machine_name</order>
 </decoder>
 
 <decoder name="stork-api">
-  <parent>isc-stork</parent>
+  <parent>stork</parent>
   <regex>API (\S+) request from (\S+) user '(\S+)' endpoint '(\S+)'</regex>
   <order>api_method, source_ip, username, endpoint</order>
 </decoder>

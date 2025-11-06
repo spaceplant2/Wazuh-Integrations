@@ -1,0 +1,140 @@
+<group name="isc-kea,">
+  
+  <!-- Rogue DHCP Server Detection -->
+  <rule id="130100" level="12">
+    <decoded_as>kea-rogue-dhcp</decoded_as>
+    <description>Rogue DHCP server detected: IP $(conflict_ip) with MAC $(conflict_mac)</description>
+  </rule>
+  
+  <rule id="130101" level="10">
+    <decoded_as>kea-dhcp4-lease</decoded_as>
+    <field name="client_ip">0.0.0.0|169.254.|255.</field>
+    <description>Suspicious DHCP lease: Invalid IP $(client_ip) to MAC $(mac_address)</description>
+  </rule>
+
+  <rule id="130103" level="0">
+    <decoded_as>kea-control-auth</decoded_as>
+    <field name="auth_action">FAILED</field>
+    <description>Kea Control Agent: Authentication failed for user $(username) from $(source_ip)</description>
+  </rule>
+
+  <rule id="130104" level="8" frequency="5" timeframe="300">
+    <if_matched_sid>130103</if_matched_sid>
+    <same_user />
+    <description>Kea Control Agent brute force attempt: User $(username) from $(source_ip)</description>
+  </rule>
+
+  <!-- DHCP Starvation Attacks -->
+  <rule id="130200" level="8" frequency="10" timeframe="60">
+    <if_matched_sid>130101</if_matched_sid>
+    <same_field>mac_address</same_field>
+    <description>DHCP starvation attempt: Multiple leases to MAC $(mac_address)</description>
+  </rule>
+  
+  <rule id="130201" level="7" frequency="15" timeframe="120">
+    <if_matched_sid>130101</if_matched_sid>
+    <same_field>mac_address</same_field>
+    <description>Rapid DHCP release/request cycle: Possible starvation - MAC $(mac_address)</description>
+  </rule>
+
+  <!-- Suspicious Lease Patterns -->
+  <rule id="130300" level="6">
+    <decoded_as>kea-dhcp4-lease</decoded_as>
+    <field name="lease_time">0|1</field>
+    <description>Suspiciously short DHCP lease: $(lease_time) seconds to MAC $(mac_address)</description>
+  </rule>
+  
+  <rule id="130301" level="7">
+    <decoded_as>kea-dhcp4-lease</decoded_as>
+    <field name="mac_address">00:00:00:00:00:00|FF:FF:FF:FF:FF:FF|01:00:5E:</field>
+    <description>Suspicious MAC address in DHCP lease: $(mac_address) -> $(client_ip)</description>
+  </rule>
+
+  <!-- IPv6 Specific Security -->
+  <rule id="130400" level="8" frequency="5" timeframe="300">
+    <if_matched_sid>130101</if_matched_sid>
+    <field name="lease_type">IA_NA</field>
+    <same_field>duid</same_field>
+    <description>Multiple IPv6 leases to same DUID: Possible SLAAC abuse - $(duid)</description>
+  </rule>
+  
+  <rule id="130401" level="9">
+    <decoded_as>kea-dhcp6-lease</decoded_as>
+    <field name="duid">00:00:00:00:00:00:00</field>
+    <description>Suspicious DUID in IPv6 lease: $(duid) -> $(client_ip)</description>
+  </rule>
+
+  <!-- High Availability Security -->
+  <rule id="130500" level="10">
+    <decoded_as>kea-ha</decoded_as>
+    <field name="ha_event">FAILOVER</field>
+    <field name="state">partner-down</field>
+    <description>Kea HA failover: Partner $(partner) is down</description>
+  </rule>
+  
+  <rule id="130501" level="8">
+    <decoded_as>kea-ha</decoded_as>
+    <field name="ha_event">STATE</field>
+    <field name="state">partner-in-maintenance</field>
+    <description>Kea HA partner in maintenance: $(partner)</description>
+  </rule>
+
+  <!-- DHCP + DNS Correlation -->
+  <rule id="130600" level="0">
+    <if_sid>130100,130200,120100,120101</if_sid>
+    <description>Suspicious network events</description>
+  </rule>
+
+  <rule id="130601" level="10">
+    <if_matched_sid>130600</if_matched_sid>
+    <same_field>mac_address</same_field>
+    <description>Suspicious DHCP client $(mac_address) also showing DNS tunneling behavior</description>
+  </rule>
+
+
+  <rule id="130602" level="0">
+    <if_sid>130300, 120300, 120302</if_sid>
+    <description>Suspicious DHCP lease performing DNS reconnaissance</description>
+  </rule>
+
+  <rule id="130603" level="9">
+    <if_matched_sid>130602</if_matched_sid>
+    <same_srcip />
+    <description>Suspicious DHCP lease $(client_ip) performing DNS reconnaissance</description>
+  </rule>
+
+  <rule id="130604" level="0">
+    <if_sid>130300, 120200, 120201</if_sid>
+    <description>Suspicious network events parent</description>
+  </rule>
+
+  <rule id="130605" level="9">
+    <if_matched_sid>130604</if_matched_sid>
+    <same_srcip />
+    <description>Suspicious DHCP lease $(client_ip) querying potential DGA domains</description>
+  </rule>
+
+
+  <!-- Rapid IP Changes -->
+  <rule id="130700" level="7" frequency="3" timeframe="300">
+    <if_matched_sid>130101</if_matched_sid>
+    <same_field>mac_address</same_field>
+    <different_srcip />
+    <description>Rapid IP changes for MAC $(mac_address) - possible MAC spoofing</description>
+  </rule>
+
+  <!-- DHCP Service Attacks -->
+  <rule id="130800" level="10" frequency="5" timeframe="30">
+    <if_matched_sid>130101</if_matched_sid>
+    <field name="error_type">PROCESS</field>
+    <description>Kea service under attack: Multiple process failures</description>
+  </rule>
+  
+  <rule id="130801" level="8" frequency="20" timeframe="60">
+    <if_matched_sid>130101</if_matched_sid>
+    <field name="error_type">PACKET</field>
+    <same_srcip />
+    <description>DHCP packet flood from $(client_ip)</description>
+  </rule>
+
+</group>

@@ -17,8 +17,8 @@ mkdir -p "${OSSEC_HOME}/etc/rules"
 mkdir -p "${OSSEC_HOME}/etc/decoders"
 
 # Copy rules and decoders
-cp ${INSTALL_DIR}/ossec/rules/* ${OSSEC_HOME}/etc/rules/
-cp ${INSTALL_DIR}/ossec/decoders/* ${OSSEC_HOME}/etc/decoders/
+cp ${INSTALL_DIR}/ossec/etc/rules/* ${OSSEC_HOME}/etc/rules/
+cp ${INSTALL_DIR}/ossec/etc/decoders/* ${OSSEC_HOME}/etc/decoders/
 
 # Set permissions
 chown -R root:wazuh ${OSSEC_HOME}/etc/rules

@@ -1,27 +1,27 @@
-# Wazuh Network Infrastructure Monitoring Roadmap
+# Wazuh Network Infrastructure Monitoring - Implementation Status
 
-## Executive Summary
-This document outlines the implementation roadmap for comprehensive network infrastructure monitoring using Wazuh, covering DNS, DHCP, firewall, authentication, and network transport layers with full security correlation capabilities.
+## v0.1 Completed ✅
 
-## Current Implementation Status ✅
+### OPNsense Firewalls ✅
+**Components:** Suricata, Firewall, DHCP, System Logs
+**Security Coverage:**
+- Real-time IPS alert correlation
+- Firewall block/allow decision tracking
+- Network traffic pattern analysis
+- System-level security events
 
-### Core Infrastructure Monitoring
+### Bind9 DNS Servers   ✅
+**Components:** Authoritative DNS, Forwarding, Query Logging
+**Security Coverage:**
+- DNS tunneling detection (long domains, encoded data)
+- DGA domain pattern recognition
+- Zone transfer attempt monitoring
+- Internal reconnaissance detection
+- Query type anomaly detection
 
-**OPNsense Firewalls** - Implemented
-- Suricata IPS monitoring
-- Firewall block/allow logs  
-- DHCP service monitoring
-- General syslog correlation
-
-**Bind9 DNS Servers** - Implemented
-- DNS query monitoring
-- DGA (Domain Generation Algorithm) detection
-- DNS tunneling detection
-- Zone transfer security
-- Reconnaissance detection
-
-**ISC-Kea DHCP** - Implemented
-- IPv4/IPv6 lease monitoring
+### ISC-Kea DHCP Servers ✅
+**Components:** DHCPv4, DHCPv6, Control Agent, DDNS
+**Security Coverage:**
 - Rogue DHCP server detection
 - DHCP starvation attacks
 - HA failover monitoring
@@ -30,67 +30,91 @@ This document outlines the implementation roadmap for comprehensive network infr
 **ISC-Stork** - Implemented
 - Management plane monitoring
 - Configuration change tracking
-- Service health monitoring
-- Authentication security
-- API access monitoring
+- Authentication security monitoring
+- Service health correlation
+- HA failover event tracking
+- Administrative access auditing
 
-**Pi-hole DNS** - Implemented
-- DNS query filtering events
-- Security event correlation
-- Blocked domain monitoring
+### Pi-hole DNS Filtering ✅
+**Components:** DNS Forwarding, Ad Blocking, Query Logging
+**Security Coverage:**
+- Blocked domain request monitoring
+- Query pattern analysis
+- Security event correlation with upstream DNS
 
-### Security Capabilities Achieved
-- DNS tunneling & DGA detection
-- Rogue DHCP server detection
-- Network reconnaissance monitoring  
-- Authentication chain correlation
-- Cross-service attack detection
-- HA/failover event tracking
-- Configuration change monitoring
-- API security monitoring
+## v0.2 Stock Rule Integration
+**Objective**: Leverage Wazuh's existing rules to reduce duplication and improve detection coverage. Renumbering will be needed as well.
 
-## Release Plan
+### Renumber Existing Rules
 
-### v0.1 - Initial Release ✅
-**Status:** Complete
-- Core DNS/DHCP/firewall monitoring implemented
-- Test framework established
-- Ansible deployment automation
-- Basic documentation
+#### Proposed Rule Numbering Scheme
 
-### v0.2 - Real-World Testing & Validation 🟡
-**Next Priority**
-- Production environment testing
-- Performance benchmarking and optimization
-- Rule tuning based on real traffic patterns
-- False positive analysis and reduction
-- Documentation improvements from user feedback
+##### 100000-100999: DNS Monitoring
+- 100099: **Base templates**
+- 100199: **Stock DNS rule grouping**
+- 100399: DNS security correlations
+- 100499: Pi-hole specific items
 
-### v0.3 - Rule ID Harmonization 🔵
-**Future Release**
-- Audit and resolve rule ID conflicts with official Wazuh rulesets
-- Define and implement safe rule ID ranges
-- Update all rule files and test scripts with new IDs
-- Document new rule ID scheme
+##### 101000-101999: DHCP Monitoring
+- 101099: **Base templates**
+- 101199: **Stock DHCP rule grouping**
+- 101299: DHCP server events
+- 101399: DHCP Security correlations
+- 101499: ISC-Kea specific items
+- 101599: ISC-DHCP specific items
 
-### v1.0 - Production Ready 🟢
-**Target Release**
-- All known issues resolved
-- Extensive validation completed
-- Performance optimized for production
-- Comprehensive documentation
-- Community feedback incorporated
+##### 102000-102999: Firewall Integrations
+- 102099: **Base templates**  
+- 102119: **Stock firewall rule grouping**
+- 102199: Firewall blocks
 
-## Phase 2: Network Access & Authentication 🟡
+##### 103000-103999: IPS / IDS Integrations
+- 103099: **Base templates**  
+- 103199: **Stock IDS rule grouping**
+- 103299: Suricata
+- 103399: Snort
 
-### Priority 1: RADIUS Monitoring
-**Target:** FreeRADIUS, Windows NPS
+### Parent Rule Strategy
+- Create level 0 grouping rules for each integration point
+- Ensure consistent field naming across stock/custom rules
+- Maintain separate SID ranges while sharing logic
 
-**Security Focus:**
-- WiFi/VPN authentication correlation
-- EAP-TLS certificate monitoring
-- Brute force detection
-- Policy violation alerts
+### DNS Rules Integration
+- Identify relevant stock DNS rules
+- Create grouping rules for DNS query patterns
+- Build correlation rules linking DNS events to Pi-hole/BIND9 alerts
+- Maintain field consistency between stock and custom rules
+
+### Network Rules Integration  
+- Map stock firewall rules to OPNSense events
+- Correlate Suricata alerts with network blocks
+- Use existing Wazuh field extractions where possible
+
+**Success Metrics**:
+- 30% reduction in custom rule count
+- Maintain or improve alert accuracy
+- No degradation in detection coverage
+
+## Ready for Testing 🔬
+
+### Test Framework Development
+**Priority:** HIGH - Required before new implementations
+**Components to Validate:**
+- DNS security rule effectiveness
+- DHCP attack detection accuracy
+- Firewall correlation logic
+- Cross-service alerting
+- False positive baseline
+
+## Next Implementation Phase 🟡
+
+### RADIUS Authentication
+**Target Services:** FreeRADIUS, Windows NPS
+**Security Objectives:**
+- WiFi/VPN authentication monitoring
+- Brute force attack detection
+- EAP-TLS certificate validation
+- Policy violation alerting
 - Authentication chain completeness
 
 ### Priority 2: VPN Infrastructure

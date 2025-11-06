@@ -1,29 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <decoder name="pihole">
-  <program_name>^pihole</program_name>
-  <prematch>^\w+ +\d+ \d+:\d+:\d+ \S+ (pihole|pihole-FTL)\[?\d*\]?:</prematch>
+  <program_name>pihole-FTL</program_name>
 </decoder>
 
 <decoder name="pihole-query">
   <parent>pihole</parent>
-  <regex>query\[(\S+)\] (\S+) from (\S+)</regex>
+  <regex>query[(\S+)] (\S+) from (\S+)</regex>
   <order>query_type, domain, client_ip</order>
 </decoder>
 
 <decoder name="pihole-blocked">
   <parent>pihole</parent>
-  <regex>\/etc\/pihole\/gravity.list (\S+) is (blocked|0.0.0.0)</regex>
+  <regex>/etc/pihole/gravity.list (\S+) is (\S+)</regex>
   <order>domain, action</order>
 </decoder>
 
 <decoder name="pihole-forward">
   <parent>pihole</parent>
-  <regex>forwarded (\S+) to (upstream|(\S+))</regex>
+  <regex>forwarded (\S+) to (\S+)</regex>
   <order>domain, upstream_server</order>
 </decoder>
 
 <decoder name="pihole-cache">
   <parent>pihole</parent>
-  <regex>cache (hit|miss)</regex>
+  <regex>cache (\S+)</regex>
   <order>cache_result</order>
 </decoder>
