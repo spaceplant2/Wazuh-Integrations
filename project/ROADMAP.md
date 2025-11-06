@@ -44,6 +44,65 @@
 - Query pattern analysis
 - Security event correlation with upstream DNS
 
+## Stock Rule Integration
+**Objective**: Leverage Wazuh's existing rules to reduce duplication and improve detection coverage
+
+### Renumber Existing Rules
+
+*Proposed Rule Numbering Scheme*
+
+---
+
+## Proposed Rule Numbering Scheme
+
+### 100000-100999: DNS Monitoring
+- 100000-100009: Base templates
+- 100010-100019: **Stock DNS rule grouping**
+- 100020-100029: **Stock security rule grouping** 
+- 100100-100199: Pi-hole queries
+- 100200-100299: Pi-hole domain analysis
+- 100300-100399: DNS tunneling detection  
+- 100400-100499: DGA domain detection
+- 100500-100599: DNS correlation rules
+
+### 101000-101999: DHCP Monitoring
+- 101000-101009: Base templates
+- 101010-101019: **Stock DHCP rule grouping**
+- 101100-101199: DHCP server events
+- 101200-101299: Suspicious DHCP clients
+- 101300-101399: DHCP lease monitoring
+- 101400-101499: DHCP correlation rules
+
+### 102000-102999: OPNSense Integration
+- 102000-102009: Base templates  
+- 102010-102019: **Stock firewall rule grouping**
+- 102020-102029: **Stock IDS rule grouping**
+- 102100-102199: Firewall blocks
+- 102200-102299: Suricata base
+- 102300-102399: Suricata alerts
+- 102400-102499: Firewall-Suricata correlation
+
+### Parent Rule Strategy
+- Create level 0 grouping rules for each integration point
+- Ensure consistent field naming across stock/custom rules
+- Maintain separate SID ranges while sharing logic
+
+### DNS Rules Integration
+- Identify relevant stock DNS rules (03100-03199 range)
+- Create grouping rules for DNS query patterns
+- Build correlation rules linking DNS events to Pi-hole/BIND9 alerts
+- Maintain field consistency between stock and custom rules
+
+### Network Rules Integration  
+- Map stock firewall rules to OPNSense events
+- Correlate Suricata alerts with network blocks
+- Use existing Wazuh field extractions where possible
+
+**Success Metrics**:
+- 30% reduction in custom rule count
+- Maintain or improve alert accuracy
+- No degradation in detection coverage
+
 ## Ready for Testing 🔬
 
 ### Test Framework Development
