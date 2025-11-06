@@ -1,6 +1,6 @@
 # Wazuh Network Infrastructure Monitoring - Implementation Status
 
-## Completed & Operational ✅
+## Completed ✅
 
 ### OPNsense Firewalls ✅
 **Components:** Suricata, Firewall, DHCP, System Logs
